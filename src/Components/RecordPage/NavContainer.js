@@ -7,7 +7,7 @@ import downABtn from "../../image/downBtn.png";
 import plusBtn from "../../image/plusBtn.png";
 import { useState } from "react";
 
-function NavContainer ({ title }) {
+function NavContainer ({ title, category, onChange, remove, setRemove }) {
     const tagImgSrc = waveRecord;
     const rightImgSrc = rightBtn;
     const plusImgSrc = plusBtn;
@@ -25,7 +25,28 @@ function NavContainer ({ title }) {
             setDis('none');
         }
     }
-
+//remove는 배열길이 이를 통해 confirm확인 구현할 것!! 
+    //일단 공통, 심화 두개로 변경하는 카테고리 스테이트 
+    function common () {
+        if(remove === 0){
+            onChange('공통교육');
+        }else {
+            if(window.confirm("수정하던 기록이 있습니다. 이동하시겠습니까?")){
+                onChange('공통교육');
+                setRemove(0);
+            }
+        }
+    }
+    function deep () {
+        if(remove === 0){
+            onChange('심화교육');
+        }else {
+            if(window.confirm("수정하던 기록이 있습니다. 이동하시겠습니까?")){
+                onChange('심화교육');
+                setRemove(0);
+            }
+        }
+    }
     
 
     return (
@@ -34,21 +55,21 @@ function NavContainer ({ title }) {
             <BasicCategory>
                 <ListBox>
                     <TagImg  src={tagImgSrc} />
-                    <Div title={true}>주간 성찰 일지</Div>
+                    <Div title='true'>주간 성찰 일지</Div>
                 </ListBox>
                 <ListBox>
                     <TagImg src={rightImgSrc} />
-                    <Div>공통교육</Div>
+                    {category === '공통교육' ? <DivA onClick={common}>공통교육</DivA> : <Div onClick={common}>공통교육</Div>}
                 </ListBox>
                 <ListBox>
                     <TagImg src={rightImgSrc} />
-                    <DivA>심화교육</DivA>
+                    {category === '심화교육' ? <DivA onClick={deep}>심화교육</DivA> : <Div onClick={deep}>심화교육</Div>}
                 </ListBox>
             </BasicCategory>
             <CustomCategory>
                 <ListBox>
                     <TagImg  src={tagImgSrc} />
-                    <Div title={true}>활동 기록</Div>
+                    <Div title='true'>활동 기록</Div>
                     <TagImg btn={true}  src={plusImgSrc} />
                 </ListBox>
                 

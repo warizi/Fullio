@@ -7,17 +7,105 @@ import meatBallImg from "../../../image/meatball.png";
 import profileImg from "../../../image/Profile.png";
 import { useState } from "react";
 import BoxShadow from "../../MainPage/StyleComponents";
+import { useEffect } from "react";
 
-function RecordMainBox () {
+// 댓글 더미 데이터 입니다.
+const commentDB = [
+    {
+        image: '',
+        name: '김윤석 매니저',
+        content: '관리자 페이지에서 매니저의 피드백이 반영되면 좋을듯 합니다.:)',
+        id: 1,
+    },
+    {
+        image: '',
+        name: '진승현',
+        content: '피드백 반영하겠습니다. 감사합니다!',
+        id: 2,
+    },
+]
+
+
+
+
+function RecordMainBox ({ item }) {
+   
     const [commentToggle, setCommentToggle] = useState('none');
     const [colorToggle, setColorToggle] = useState('Black');
     const [imgToggle, setImgToggle] = useState(DownBtn);
     const [crudToggle, setCrudToggle] = useState('none');
+    const [modi, setModi] = useState(true);
+    const [activityName, setActivityName] = useState(item.activityName);
+    const [team, setTeam] = useState(item.team);
+    const [result, setResult] = useState(item.result);
+    const [capability, setCapability] = useState(item.capabilities);
+    const [activity, setActivity] = useState(item.activity);
+    const [reflection, setReflection] = useState(item.reflection);
+    const [dateStart, setDateStart] = useState(item.dateStart);
+    const [dateEnd, setDateEnd] = useState(item.dateEnd);
+    const [week, setWeek] = useState(item.week);
+    const [commentArray, setCommentArray] = useState([]);
+    const [comment, setComment] = useState('');
+    
+    useEffect(() => {
+        setActivityName(item.activityName);
+        setTeam(item.team);
+        setResult(item.result);
+        setCapability(item.capabilities);
+        setActivity(item.activity);
+        setReflection(item.reflection);
+        setDateStart(item.dateStart);
+        setDateEnd(item.dateEnd);
+        setWeek(item.week);
+    },[item])
+
+    function modifyEnd () {
+        const dateStartArray = dateStart.split('');
+        const dateEndArray = dateEnd.split('');
+
+        dateStartArray.splice(2, 0, '.');
+        dateStartArray.splice(5, 0, '.');
+        dateEndArray.splice(2, 0, '.');
+        dateEndArray.splice(5, 0, '.');
+
+        setDateStart(dateStartArray.join(''));
+        setDateEnd(dateEndArray.join(''));
+        
+
+        setModi(!modi);
+        setCrudToggle('none');
+        if(!modi) {
+            //기록 수정사항 반영 axios를 보냅니다.
+            alert('수정완료!');
+        }
+    }
+    function modifyStart () {
+        const dateStartArray = dateStart.split('');
+        const dateEndArray = dateEnd.split('');
+
+        dateStartArray.splice(2, 1);
+        dateStartArray.splice(4, 1);
+        dateEndArray.splice(2, 1);
+        dateEndArray.splice(4, 1);
+
+        setDateStart(dateStartArray.join(''));
+        setDateEnd(dateEndArray.join(''));
+        
+
+        setModi(!modi);
+        setCrudToggle('none');
+        if(!modi) {
+            //기록 수정사항 반영 axios를 보냅니다.
+            alert('수정완료!');
+        }
+    }
     function commentClick () {
         if(commentToggle === 'none') {
             setCommentToggle('block');
             setColorToggle('#3b85a3');
             setImgToggle(PrimaryUpBtn);
+            //해당 게시물 댓글 axios 요청을 보냅니다.
+            setCommentArray(commentDB);
         } else {
             setCommentToggle('none');
             setColorToggle('black');
@@ -31,13 +119,86 @@ function RecordMainBox () {
             setCrudToggle('none');
         }
     }
+
+    function activityNameChange (e) {
+        const text = e.target.value;
+        if (text.length <= 50) {
+            setActivityName(e.target.value);
+        }
+    }
+    function teamChange (e) {
+        const text = e.target.value;
+        if (text.length <= 50) {
+            setTeam(e.target.value);
+        }
+    }
+    function resultChange (e) {
+        const text = e.target.value;
+        if (text.length <= 50) {
+            setResult(e.target.value);
+        }
+    }
+    function capabilityChange (e) {
+        const text = e.target.value;
+        if (text.length <= 50) {
+            setCapability(e.target.value);
+        }
+    }
+    function activityChange (e) {
+        const text = e.target.value;
+        if (text.length <= 1000) {
+            setActivity(e.target.value);
+        }
+    }
+    function reflectionChange (e) {
+        const text = e.target.value;
+        if (text.length <= 1000) {
+            setReflection(e.target.value);
+        }
+    }
+    function weekChange (e) {
+        if(e.target.value >= 0){
+            setWeek(e.target.value);
+        }
+    }
+    function dateStartChange (e) {
+        const text = e.target.value;
+        if(text.length <= 6) {
+            setDateStart(text);
+        }
+    }
+    function dateEndChange (e) {
+        const text = e.target.value;
+        if(text.length <= 6) {
+            setDateEnd(text);
+        }
+    }
+    function commentChange (e) {
+        const text = e.target.value;
+        setComment(text);
+    }
+    function commentSubmit (e) {
+        console.log(e.key);
+        if (e.key === 'enter') {
+            commentSubmitClick();
+        }
+    }
+    function commentSubmitClick () {
+        //댓글 정보를 axios로 보냅니다.
+        setCommentArray([...commentArray, {
+            name: '진승현', //이것은 더미데이터에만 있으므로 axios 쿠키정보로 대체합니다.
+            content: comment,
+            id: [commentArray[commentArray.length]], //이것은 기록게시물의 id정보로 대체합니다. (테이블 key값)
+        }])
+        setComment('');
+    }
     return (
         <MainContainer>
             <SideContainer>
-                <Week>9주차</Week>
-                <Date>23.02.27</Date>
+                {modi ? <WeekBox><Week>{week}주차</Week></WeekBox> : <WeekModi value={week} onChange={weekChange}/>}
+                {modi ? <Date>{dateStart}</Date> : <DateModi value={dateStart} onChange={dateStartChange}/>}
                 <Date>-</Date>
-                <Date>23.02.27</Date>
+                {modi ? <Date>{dateEnd}</Date> : <DateModi value={dateEnd} onChange={dateEndChange}/>}
                 <Check src={checkImg} />
                 <Line />
             </SideContainer>
@@ -45,47 +206,63 @@ function RecordMainBox () {
                 <InfoContainer>
                     <InfoItem>
                         <ItemTitle>활동명</ItemTitle>
-                        <ItemContent>내일 프로젝트 수행, 도시재생 특강</ItemContent>
+                        {modi ? <ItemContent>{activityName}</ItemContent> :
+                        <InputModiTitle value={activityName} onChange={activityNameChange} width={'31.5rem'}></InputModiTitle>}
                     </InfoItem>
                     <InfoItem>
                         <ItemTitle>팀명/인원/역할</ItemTitle>
-                        <ItemContent>Merge / 5명 / 디자이너</ItemContent>
+                        {modi ? <ItemContent>{team}</ItemContent> :
+                        <InputModiTitle value={team} onChange={teamChange} width={'26.5rem'}></InputModiTitle>}
                     </InfoItem>
                     <InfoItem>
                         <ItemTitle>결과/성과</ItemTitle>
-                        <ItemContent>BP, 프로젝트 보고서</ItemContent>
+                        {modi ? <ItemContent>{result}</ItemContent> : 
+                        <InputModiTitle value={result} onChange={resultChange} width={'29.7rem'}></InputModiTitle>}
                     </InfoItem>
                     <InfoItem>
                         <ItemTitle>역량</ItemTitle>
-                        <ItemContent>협업, 소통, 위기대처능력, 정보수집 능력</ItemContent>
+                        {modi ? <ItemContent>{capability}</ItemContent> : 
+                        <InputModiTitle value={capability} onChange={capabilityChange} width={'34rem'}></InputModiTitle>}
                     </InfoItem>
                 </InfoContainer>
                 <RecordContent>
-                    만천하의 옷을 실현에 우는 거친 이것이다. 방황하였으며, 이상 수 평화스러운 소금이라 이상의 그리하였는가? 이상의 있으며, 그들의 주는 교향악이다. 그들에게 동산에는 있음으로써 길을 곳이 구하지 위하여, 풀이 열락의 것이다. 것은 봄날의 방지하는 원대하고, 산야에 것이다. 청춘에서만 심장은 그들에게 무엇이 맺어, 긴지라 풍부하게 품으며, 위하여, 것이다.사라지지 목숨이 불어 품으며, 천하를 그러므로 원대하고, 남는 구하기 말이다. 온갖 오직 심장은 맺어, 것이다. 구하지 사라지지 사는가 그것을 그와 두손을 듣는다. 꽃이 사막이다.
+                    {modi ? activity :
+                    <InputModiContent value={activity} onChange={activityChange}></InputModiContent>}
                     <Hr/>
-                    동경과 가을 이름과 한 어머님, 계절이 이런 된 있습니다. 않은 묻힌 불러 시인의 써 남은 가난한 별들을 어머님, 까닭입니다. 이름을 둘 하나에 당신은 너무나 때 까닭입니다. 풀이 이름과, 겨울이 하늘에는 내 아이들의 이름을 지나가는 별 거외다. 마리아 언덕 나는 까닭입니다.사람들의 사랑과 추억과 벌써 강아지, 딴은 있습니다. 강아지, 지나가는 하나에 가득 내일 있습니다. 하나의 경, 별을 차 파란 릴케 소녀들의 이름자를 있습니다. 토끼, 소학교 아이들의 언덕 아직 까닭입니다. 이름과 부끄러운 풀이 계절이 까닭이요, 까닭이요, 다 아침이 그리워 까닭입니다.
+                    {modi ? reflection :
+                    <InputModiContent value={reflection} onChange={reflectionChange}></InputModiContent>}
                 </RecordContent>
 
                 <CommentContainer>
                     <CommentHead>
                         <CrudBox display={crudToggle}>
-                            <CrudBtn color={'black'}>수정하기</CrudBtn>
-                            <CrudBtn color={COLOR.Red}>삭제하기</CrudBtn>
+                            {modi ? <CrudBtn color={'black'} onClick={modifyStart}>수정하기</CrudBtn> :
+                            <CrudBtn color={COLOR.Primary} onClick={modifyEnd}>완료하기</CrudBtn>}
+                            <CrudBtn color={COLOR.Red}>삭제못함</CrudBtn>
                         </CrudBox>
                         <CommentCount color={colorToggle}>
-                            댓글 1<CommentBtn onClick={commentClick} src={imgToggle} />
+                            {`댓글 ${item.count}`}<CommentBtn onClick={commentClick} src={imgToggle} />
                         </CommentCount>
                         <CommentBtn onClick={meatballCick} src={meatBallImg} />
                     </CommentHead>
                     <CommentHide display={commentToggle}>
+                        {/* 댓글 불러오기 시작 */}
                         <CommentBody>
-                            <CommentWho><CommentBtn src={profileImg} /><CommentWho>ㅇ ㅇ ㅇ 매니저</CommentWho></CommentWho>
-                            <CommentContent>
-                            작고 가치를 그들의 천자만홍이 청춘이 기관과 옷을 갑 너의 그리하였는가? 꽃이 얼마나 찾아 같은 밝은 너의 있다. 생의 같으며, 크고 몸이 피에 그들의 우는 굳세게 있을 사막이다. 있는 별과 주는 그것은 그들의 튼튼하며, 듣는다.작고 가치를 그들의 천자만홍이 청춘이 기관과 옷을 갑 너의 그리하였는가? 꽃이 얼마나 찾아 같은 밝은 너의 있다. 생의 같으며, 크고 몸이 피에 그들의 우는 굳세게 있을 사막이다.
-                            </CommentContent>
+                            {/* 댓글 배열 렌더링 시작 */}
+                            {commentArray.map((item) => {
+                                return (<div key={item.id}>
+                                    {/* profileImg는 item의 image로 바꿉니다. */}
+                                    <CommentWho><CommentBtn src={profileImg} /><CommentWho>{item.name}</CommentWho></CommentWho>
+                                    <CommentContent>
+                                    {item.content}
+                                    </CommentContent> 
+                                </div>)
+                            })}
+                            {/* 댓글 배열 렌더링 끝 */}
                         </CommentBody>
-                        <CommentInput type='text' />
-                        <CommentSubmit >댓글 달기</CommentSubmit>
+                        <CommentInput type='text' value={comment} onChange={commentChange} onKeyDown={commentSubmit}/>
+                        <CommentSubmit onClick={commentSubmitClick} >댓글 달기</CommentSubmit>
+                        {/* 댓글 불러오기 끝 */}
                     </CommentHide>
                 </CommentContainer>
 
@@ -93,7 +270,36 @@ function RecordMainBox () {
         </MainContainer>
     )
 }
+//수정 시작
+const InputModiTitle = styled.textarea`
+    width: ${props => props.width};
+    height: 4.2rem;
+    font-size: 1.2rem;
+    border: 1px solid ${COLOR.GSD9};
+    border-radius: 0.8rem;
+    padding: 0.9rem 1.2rem;
+    resize: none;
+    &:focus {
+        outline: none;
+        border: 1px solid ${COLOR.Primary};
+    }
 
+`;
+const InputModiContent = styled.textarea`
+    width: 78.2rem;
+    height: 9.6rem;
+    font-size: 1.2rem;
+    border: 1px solid ${COLOR.GSD9};
+    border-radius: 0.8rem;
+    padding: 0.9rem 1.2rem;
+    resize: none;
+    &:focus {
+        outline: none;
+        border: 1px solid ${COLOR.Primary};
+    }
+
+`;
+//수정 끝
 //댓글 시작
 const CommentHide = styled.div`
     display: ${props => props.display};
@@ -113,16 +319,18 @@ const CommentSubmit = styled.div`
         cursor: pointer;
     }
 `;
-const CommentInput = styled.input`
+const CommentInput = styled.textarea`
     margin: 1.4rem 0;
     width: 78.2rem;
     border: 1px solid ${COLOR.GSD9};
     padding: 0.8rem 1.2rem;
+    resize: none;
     font-size: 1.2rem;
 `;
 const CommentContent = styled.div`
     width: 78.2rem;
     margin-top: 0.7rem;
+    margin-bottom: 1rem;
 `;
 const CommentWho = styled.div`
     display: flex;
@@ -140,6 +348,7 @@ const CommentBtn = styled.img`
     width: 2.4rem;
     height: 2.4rem;
     cursor: pointer;
+    margin-right: 0.8rem;
 `;
 const CommentCount = styled.div`
     display: flex;
@@ -167,6 +376,7 @@ const CrudBtn = styled.div`
     text-align: center;
     position: relative;
     z-index; 2000;
+    background-color: ${COLOR.White};
 
     &:hover {
         cursor: pointer;
@@ -228,6 +438,7 @@ const ContentContainer = styled.div`
     position: relative;
     z-index: 1;
     width: 78.2rem;
+    padding-bottom: 4rem;
 `;
 //메인 끝
 //사이드 시작
@@ -248,7 +459,29 @@ const Date = styled.div`
     line-height: 1.6rem;
     text-align: center;
 `;
+const DateModi = styled.input`
+    width: 5rem;
+    height: 1.6rem;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    text-align: center;
+`;
+const WeekBox = styled.div`
+    position: relative;
+    width: 5rem;
+    height: 6rem;
+`
 const Week = styled.div`
+    position: absolute;
+    top: 0;
+    width: 8rem;
+    height: 3.5rem;
+    font-size: 2rem;
+    font-weight: 500;
+    color: ${COLOR.Primary};
+    margin-bottom: 1.1rem;
+`;
+const WeekModi= styled.input`
     width: 5rem;
     height: 3.5rem;
     font-size: 2rem;

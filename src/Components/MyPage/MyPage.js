@@ -11,8 +11,8 @@ import { useEffect, useState } from "react";
 import cancelImage from '../../image/cancelMy.png';
 import upImage from '../../image/upBtn.png';
 import downImage from '../../image/downBtn.png';
-import LoginBox from "../LoginBox";
 import preAxios from "../axios";
+import PwChange from "./IdPwBox.js/PwChange";
 const InputContainer = styled.div`
     width: ${props => props.width};
     display: inline-block;
@@ -59,8 +59,8 @@ const MyBtn = styled.div`
     margin-bottom: 2rem;
     cursor: pointer;
     display: inline-block;
-    color: ${props => props.active? COLOR.Primary : COLOR.Black};
-    ${props => props.active? `border-bottom: 2px solid ${COLOR.Primary}` : ``};
+    color: ${props => props.active ? COLOR.Primary : COLOR.Black};
+    ${props => props.active ? `border-bottom: 2px solid ${COLOR.Primary}` : ``};
     &:hover {
         color: ${COLOR.Primary};
         border-bottom: 2px solid ${COLOR.Primary};
@@ -77,6 +77,7 @@ const ProfileContainer = styled.div`
     margin-right: 3.2rem;
 `;
 const InputBoxCon = styled.div`
+    z-index: 10;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 4rem;
@@ -85,6 +86,7 @@ const InputBoxCon = styled.div`
 const InputCon = styled.div`
     display: inline-block;
     width: 32rem;
+    position: relative;
 `;
 const InfoTitle = styled.h3`
     font-size: 1.4rem;
@@ -96,7 +98,7 @@ const InputConBox = styled.div`
     width: 32rem;
     height: 4.2rem;
     padding: 0.9rem 1.2rem;
-    border: 1px solid ${COLOR.GSD9};
+    border: 1px solid ${props => props.borderColor};
     border-radius: 0.8rem;
     position: relative;
 `;
@@ -116,6 +118,7 @@ const InInput = styled.input`
     }
 `;
 const InfoSubmit = styled.div`
+    z-index: 1000;
     font-size: 1.4rem;
     color: ${COLOR.Primary};
     cursor: pointer;
@@ -162,6 +165,15 @@ const NickNameCount = styled.div`
     top: 14rem;
     right: 1rem;
 `;
+const AlertMSG = styled.div`
+    height: 2rem;
+    font-size: 1rem;
+    color: ${COLOR.Red};
+    display: ${props => props.display};
+    position: absolute;
+    left: 1rem;
+    bottom: -2rem;
+`;
 function InputBox ({ width, title, contents }) {
     return (
         <InputContainer width={width}>
@@ -182,13 +194,14 @@ function MyPageNavBox () {
         </NavContainer>
     )
 }
-function InfoInput ({ placeholder, type, title, onChange, value, readOnly, onKeyUp }) {
+function InfoInput ({ borderColor, alert, display, placeholder, type, title, onChange, value, readOnly, onKeyUp }) {
     return (
         <InputCon>
             <InfoTitle>{title}</InfoTitle>
-            <InputConBox>
-            <InInput onKeyUp={onKeyUp} readOnly={readOnly} placeholder={placeholder} type={type} value={value} onChange={onChange}></InInput>
+            <InputConBox borderColor={borderColor}>
+            <InInput name="input-text" onKeyUp={onKeyUp} readOnly={readOnly} placeholder={placeholder} type={type} value={value} onChange={onChange} ></InInput>
             </InputConBox>
+            <AlertMSG display={display}>{alert}</AlertMSG>
         </InputCon>
     )
 }
@@ -217,9 +230,10 @@ function BasicInfo ({ changeLogin }) {
     const [nickName, setNickName] = useState("");
     const [userName, setUserName] = useState("");
     const [user, setUser] = useState("");
-    const [email, setEmail] = useState("");
+    const [emailText, setEmailText] = useState("");
     const [phone, setPhone] = useState("");
     const [countText, setCountText] = useState('0/25');
+    const [alertEmail, setAlertEmail] = useState('none');
     //인풋 핸들러
     useEffect(() => {
         preAxios.get('/mypage/name')
@@ -252,9 +266,9 @@ function BasicInfo ({ changeLogin }) {
         preAxios.get('/mypage/email')
         .then((res) => {
             if (res.status === 200) {
-                setEmail(res.data.email);
+                setEmailText(res.data.email);
             } else {
-                setEmail('닉네임이 없거나 불러오지 못했습니다ㅠㅠ');
+                setEmailText('닉네임이 없거나 불러오지 못했습니다ㅠㅠ');
             }
         })
         .catch((error) => {console.error(error)});
@@ -262,7 +276,8 @@ function BasicInfo ({ changeLogin }) {
         .then((res) => {
             setPhone(res.data.phoneNumber);
         })
-    }, []);
+        setCountText(nickName.length + '/25');
+    }, [nickName]);
     function nickNameHandler (e) {
         const nickNameText = e.target.value;
         if (nickNameText.length <= 25){
@@ -271,22 +286,66 @@ function BasicInfo ({ changeLogin }) {
         }
     }
     function emailHandler (e) {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         const emailText = e.target.value;
-        setEmail(emailText);
+        setEmailText(emailText);
+        if (re.test(emailText)) {
+            setAlertEmail('none');
+        } else {
+            setAlertEmail('block');
+        }
     }    
     function phonHandler (e) {
+        const reB = /^\d{4}/;
+        const reC = /^\d{3}[-]{1}/;
+        const reD = /^\d{3}[-]{1}\d{1,4}/;
+        const reE = /^\d{3}[-]{1}\d{5}/;
+        const reF = /^\d{3}[-]{1}\d{4}[-]{1}/;
+        const reG = /^\d{3}[-]{1}\d{4}[-]{1}\d{1,4}/;
         const phoneText = e.target.value;
-        setPhone(phoneText);
+        if(phoneText.length <= 3) {//숫자 3개일 때 그대로 적용
+            console.log('숫자 3개만 있음');
+            const reA = /^\d{0,3}/;
+            if(reA.test(phoneText)){
+                setPhone(phoneText);
+            }
+        } else if (phoneText.length === 4 && reB.test(phoneText)) {//숫자 4개에 하이픈 없을 때 하이픈 추가
+            console.log('숫자 4개 입력');
+            const phoneSplit = phoneText.split('');
+            phoneSplit.splice(3, 0, '-');
+            const phoneJoin = phoneSplit.join('');
+            setPhone(phoneJoin);
+        } else if (phoneText.length === 4 && reC.test(phoneText)) {//숫자 3개에 하이픈 있을 때 그대로 적용
+            console.log('숫자 3개 하이픈 1개');
+            setPhone(phoneText);
+        } else if (phoneText.length >= 5 && phoneText.length <= 8 && reD.test(phoneText)){// 숫자 3개 + 하이픈 1개 + 숫자 1~4개일 때 그대로 적용
+            console.log('숫자 3개 하이픈 1개 숫자 1~4개');
+            setPhone(phoneText);
+        } else if (phoneText.length === 9 && reE.test(phoneText)) {//숫자 3개 + 하이픈1개 + 숫자 5개 일 때 하이픈 추가
+            console.log('숫자 3개 하이픈 1개 숫자 5개');
+            const phoneSplit = phoneText.split('');
+            phoneSplit.splice(8, 0, '-');
+            const phoneJoin = phoneSplit.join('');
+            setPhone(phoneJoin);
+        } else if (phoneText.length === 9 && reF.test(phoneText)) {//숫자 3개 + 하이픈1개 + 숫자 4개 + 하이픈 1개 일 때 그대로 적용
+            console.log('숫자 3개 하이픈 1개 숫자 4개 하이픈 1개');
+            setPhone(phoneText);
+        } else if (phoneText.length >= 9 && phoneText.length <= 13 && reG.test(phoneText)){//마지막 완성
+            console.log('마지막 단계');
+            setPhone(phoneText);
+        }
     }
     function putEmail (e) {
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && alertEmail === 'none') {
             alert('Email 적용 완료!')
             preAxios.put('/mypage/userupdate', {
-                email: email,
+                email: emailText,
             })
             .catch((error) => {
                 console.error(error);
             })
+        } else if (e.key === "Enter" && alertEmail === 'block') {
+            alert('Email 형식이 올바른지 확인해주세요.:)');
         }
     }
     function putNickName (e) {
@@ -319,17 +378,18 @@ function BasicInfo ({ changeLogin }) {
         </ProfileContainer>
         <InputBoxCon>
             <InfoSubmit onClick={changeLogin}>변경하기</InfoSubmit>
-            <InfoInput placeholder={'아이디'} type={'text'} title={'아이디/인재번호'} value={user} readOnly={'readOnly'} />
-            <InfoInput placeholder={'새 비밀번호'} type={'password'} title={'비밀번호'} value={12345} readOnly={'readOnly'} />   
-            <InfoInput placeholder={'이름'} type={'text'} title={'이름'} value={userName} readOnly={'readOnly'} />
-            <InfoInput placeholder={'인재들에게 보일 별명을 적어 주세요!(25자 이내)'} type={'text'} title={'별명'} value={nickName} onKeyUp={putNickName} onChange={nickNameHandler}/>
+            <InfoInput borderColor={COLOR.GSD9} display={'none'} placeholder={'아이디'} type={'text'} title={'아이디/인재번호'} value={user} readOnly={'readOnly'} />
+            <InfoInput borderColor={COLOR.GSD9} display={'none'} placeholder={'새 비밀번호'} type={'password'} title={'비밀번호'} value={12345} readOnly={'readOnly'} />   
+            <InfoInput borderColor={COLOR.GSD9} display={'none'} placeholder={'이름'} type={'text'} title={'이름'} value={userName} readOnly={'readOnly'} />
+            <InfoInput borderColor={COLOR.GSD9} display={'none'} placeholder={'인재들에게 보일 별명을 적어 주세요!(25자 이내)'} type={'text'} title={'별명'} value={nickName} onKeyUp={putNickName} onChange={nickNameHandler}/>
             <NickNameCount>{countText}</NickNameCount>
-            <InfoInput placeholder={'이메일을 추가 해주세요!'} type={'text'} title={'email'} value={email} onKeyUp={putEmail} onChange={emailHandler}/>
-            <InfoInput placeholder={'연락처'} type={'text'} title={'연락처'} value={phone} onKeyUp={putPhone} onChange={phonHandler}/>
+            <InfoInput borderColor={alertEmail === 'block' ? COLOR.Red: COLOR.GSD9} display={alertEmail} alert={'정확한 이메일 형식으로 입력해 주세요.:)'} placeholder={'이메일을 추가 해주세요!'} type={'text'} title={'email'} value={emailText} onKeyUp={putEmail} onChange={emailHandler}/>
+            <InfoInput borderColor={COLOR.GSD9} display={'none'} placeholder={'연락처'} type={'text'} title={'연락처'} value={phone} onKeyUp={putPhone} onChange={phonHandler}/>
         </InputBoxCon>
         </>
     )
 }
+
 const InterestMainBox = styled.div`
     display: flex;
     flex-direction: row;
@@ -1117,7 +1177,7 @@ function MyMainBox({ changeLogin }) {
                 title={'기본 정보'} 
                 contents={<BasicInfo changeLogin={changeLogin}/>}
             />
-            <CommentBox changeLogin={changeLogin}>
+            <CommentBox>
             <CommentTitle>한 줄 다짐</CommentTitle>
             <CommentInputCon>
                 <CommentInput onKeyUp={commentPut} oplaceholder="나의 한 줄 다짐을 적어 보세요! (60자 이내)" type='text' value={commentText} onChange={commentHandler}/>
@@ -1153,7 +1213,7 @@ function MyPage() {
     }
     return (
         <>
-            { !loginBox ? <></> : <LoginCenterCon><LoginBox /></LoginCenterCon>}
+            { !loginBox ? <></> : <PwChange cancelChange={loginBoxToggle}/>}
             <div className='start'></div>
             <div className='main-container'>
                 <div className='left-container'>
@@ -1167,8 +1227,4 @@ function MyPage() {
         </>
     )
 }
-const LoginCenterCon = styled.div`
-    position: absolute;
-    z-index: 10000;
-`;
 export default MyPage;

@@ -9,11 +9,16 @@ import loginAxios from '../loginAxios';
 import { useNavigate } from 'react-router-dom';
 import NavContainer from './NavContainer';
 import MainContainer from './MainContainer';
+import { useState } from 'react';
+
+
 
 function RecordMain () {
+    const [removeAlet, setRemoveAlet] = useState(0);
     const logo = logoImg;
     const movePage = useNavigate();
-
+    //기록페이지 공통, 심화, 커스텀카테고리 등을 변경하는 스테이트입니다.
+    const [category, setCategory] = useState('공통교육');
     function moveMain () {
         movePage('/main');
     }
@@ -34,11 +39,11 @@ function RecordMain () {
             <div className='main-container'>
                 <div className='left-container'>
                     <img onClick={moveMain} className='main-logo-img' src={logo} alt="Fullio Logo" />
-                    <NavBox selectColor={'background-position-y: -10rem;background-size: 400% 400%;color: white;'} />
+                    <NavBox remove={removeAlet} selectColor={'background-position-y: -10rem;background-size: 400% 400%;color: white;'} />
                     <WaveButton onClick={clickLogout}>로그아웃</WaveButton>
                 </div>
-                <NavContainer title={'카테고리'}/>
-                <MainContainer />
+                <NavContainer remove={removeAlet} setRemove={setRemoveAlet} title={'카테고리'} category={category} onChange={setCategory}/>
+                <MainContainer remove={removeAlet} setRemove={setRemoveAlet} category={category} />
             </div>
         </>
     )

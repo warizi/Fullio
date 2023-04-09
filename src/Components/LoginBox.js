@@ -108,25 +108,27 @@ function LoginBox() {
             <h1>오늘의 나를 담아 내일로,</h1>
             <Logo />
             <InputLogin
-            onKeyUp={enterLogin}
-            type='text'
-            className={failLoginId}
-            onClick={clearTextId}
-            onBlur={cancelImgBlurId}
-            onFocus={cancelImgFocusId}
-            value={cancelImgMoveId}
-            text={textId} 
-            onChange={resetTextId}>아이디</InputLogin>
+                onKeyUp={enterLogin}
+                type='text'
+                className={failLoginId}
+                onClick={clearTextId}
+                onBlur={cancelImgBlurId}
+                onFocus={cancelImgFocusId}
+                value={cancelImgMoveId}
+                text={textId} 
+                onChange={resetTextId}
+            >아이디</InputLogin>
             <InputLogin 
-            onKeyUp={enterLogin}
-            type='password' 
-            className={failLoginPw} 
-            onClick={clearTextPw} 
-            onBlur={cancelImgBlurPw} 
-            onFocus={cancelImgFocusPw} 
-            value={cancelImgMovePw} 
-            text={textPw} 
-            onChange={resetTextPw}>비밀번호</InputLogin>
+                onKeyUp={enterLogin}
+                type='password' 
+                className={failLoginPw} 
+                onClick={clearTextPw} 
+                onBlur={cancelImgBlurPw} 
+                onFocus={cancelImgFocusPw} 
+                value={cancelImgMovePw} 
+                text={textPw} 
+                onChange={resetTextPw}
+            >비밀번호</InputLogin>
             <span className='alertIdPw'>{alertIdPw}</span>
             <LoginButton onClick={loginBtn}/>
         </div>
