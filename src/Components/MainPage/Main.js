@@ -132,26 +132,24 @@ function Main() {
 
     const logo = logoImg;
     return (
-    <>
-        <div className='start'></div>
-        <div className='main-container'>
-            <div className='left-container'>
-                <img className='main-logo-img' src={logo} alt="Fullio Logo" />
-                <NavBox />
-                <WaveButton onClick={clickLogout}>로그아웃</WaveButton>
-                
+        <>
+            <div className='start'></div>
+            <div className='main-container'>
+                <div className='left-container'>
+                    <img className='main-logo-img' src={logo} alt="Fullio Logo" />
+                    <NavBox />
+                    <WaveButton onClick={clickLogout}>로그아웃</WaveButton>
+                </div>
+                <div className='cneter-container'>
+                    <CalendarBox></CalendarBox>
+                    <SkillBox myTotal={getMyTotal}/>
+                    <MonthRecord value={getRecord} />
+                </div>
+                <div className='right-container'>
+                    <UserInfo motto={getUserInfo.motto} nickname={getUserInfo.nickName} number={getUserInfo.memberNumber} name={getUserInfo.name} strength={getStrength}/>
+                </div>
             </div>
-            <div className='cneter-container'>
-                <CalendarBox></CalendarBox>
-                <SkillBox myTotal={getMyTotal}/>
-                <MonthRecord value={getRecord} />
-                
-            </div>
-            <div className='right-container'>
-                <UserInfo motto={getUserInfo.motto} nickname={getUserInfo.nickName} number={getUserInfo.memberNumber} name={getUserInfo.name} strength={getStrength}/>
-            </div>
-        </div>
-    </>
+        </>
     )
 }
 

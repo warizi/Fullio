@@ -7,10 +7,30 @@ import downABtn from "../../image/downBtn.png";
 import plusBtn from "../../image/plusBtn.png";
 import { useState } from "react";
 
+const dragDBA = [
+    {
+        title: '내일프로젝트',
+    },
+    {
+        title: '업프로젝트',
+    },
+    {
+        title: 'CoP',
+    },
+    {
+        title: '프론트엔드 스터디',
+    },
+]
+
+let dragStartIndex = null;
+let dragEnterIndex = null;
+
 function NavContainer ({ title, category, onChange, remove, setRemove }) {
     const tagImgSrc = waveRecord;
     const rightImgSrc = rightBtn;
     const plusImgSrc = plusBtn;
+
+    const [dragDB, setDragDB] = useState(dragDBA);
 
     const [img, setImg] = useState(rightBtn);
     const [dis, setDis] = useState('none');
@@ -47,7 +67,41 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
             }
         }
     }
-    
+    function dragStart (e, index) {
+        dragStartIndex = index;
+        console.log('스타트 인덱스', index);
+    }
+    function dragEnter (e, index) {
+        dragEnterIndex = index;
+        const startDBIndex = dragDB[dragStartIndex];
+        const enterDBIndex = dragDB[dragEnterIndex];
+        const dbNew = [...dragDB];
+        const enterindex = dbNew.indexOf(enterDBIndex);
+        dbNew.splice(enterindex + 1, 0, startDBIndex);
+        setDragDB([...dbNew]);
+        console.log('엔터 인덱스', index);
+    }
+    function dragLeave (e, index) {
+        const startDBIndex = dragDB[dragStartIndex];
+        const enterDBIndex = dragDB[dragEnterIndex];
+        const dbNew = [...dragDB];
+        const enterindex = dbNew.indexOf(enterDBIndex);
+        dbNew.splice(enterindex + 1, 1);
+        console.log('지워짐', dbNew);
+        setDragDB([...dbNew]);
+        console.log('리브 인덱스', index);
+    }
+    function dragEnd (e, index) {
+        // const startDBIndex = dragDB[dragStartIndex];
+        // const enterDBIndex = dragDB[dragEnterIndex];
+        // const dbNew = [...dragDB];
+        // dbNew.splice(dragStartIndex, 1);
+        // const enterindex = dbNew.indexOf(enterDBIndex);
+        // dbNew.splice(enterindex + 1, 0, startDBIndex);
+        // setDragDB([...dbNew]);
+        dragStartIndex = null;
+        dragEnterIndex = null;
+    }
 
     return (
         <NavBoxContainer>
@@ -87,9 +141,9 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
                             <Div>내일프로젝트2</Div>
                         </ListBox>
                         </DownCon>
-                <ListBox>
+                <ListBox draggable={true}>
                     <TagImg btn={true} src={rightImgSrc} />
-                    <Div>특강</Div>
+                    <Div >특강</Div>
                 </ListBox>
                 <ListBox>
                     <TagImg btn={true} src={rightImgSrc} />
@@ -103,11 +157,39 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
                     <TagImg btn={true} src={rightImgSrc} />
                     <Div>GA4 스터디</Div>
                 </ListBox>
+            {/* 드래그 앤 드랍 연습 시작 */}
+            <hr></hr>
+            {dragDB.map((item, index) => {
+                return    <DragListBox 
+                            draggable 
+                            key={index}
+                            onDragStart={(e) => dragStart(e, index)}
+                            onDragEnter={(e) => dragEnter(e, index)}
+                            onDragEnd={(e) => dragEnd(e, index)}
+                            onDragLeave={(e) => dragLeave(e, index)}
+                        >
+                           {item.title}
+                        </DragListBox>
+            })}
+            {/* 드래그 앤 드랍 연습 끝 */}
+
 
             </CustomCategory>
         </NavBoxContainer>
     )
 }
+
+//드래그 앤 드랍 연습 시작 
+
+const DragListBox = styled.div`
+    width: 18rem;
+    height: 3rem;
+    background-color: ${COLOR.Primary};
+    cursor: pointer;
+    margin-bottom: 1rem;
+`;
+
+//드래그 앤 드랍 연습 끝
 const DownCon = styled.div`
     display: ${props => props.display};
     margin-left: 2rem;

@@ -13,6 +13,7 @@ import upImage from '../../image/upBtn.png';
 import downImage from '../../image/downBtn.png';
 import preAxios from "../axios";
 import PwChange from "./IdPwBox.js/PwChange";
+import axios from "axios";
 const InputContainer = styled.div`
     width: ${props => props.width};
     display: inline-block;
@@ -71,7 +72,15 @@ const ProfileImg = styled.img`
     height: 11.2rem;
     border-radius: 999rem;
 `;
+const ProfileInput = styled.input`
+    opacity: 0;
+    position: absolute;
+    width: 3.2rem;
+    height: 3.2rem;
+    background-color: ${COLOR.GSD9};
+`;
 const ProfileContainer = styled.div`
+    position: relative;
     width: 11.2rem;
     height: 100%;
     margin-right: 3.2rem;
@@ -276,6 +285,15 @@ function BasicInfo ({ changeLogin }) {
         .then((res) => {
             setPhone(res.data.phoneNumber);
         })
+        preAxios.get('/main/userinfo')
+        .then((res) => {
+            if (res.data.profil_path) {
+                setProfileImgURL(res.data.profil_path);
+            };
+        })
+        .catch((err) => {
+            console.error(err);
+        });
         setCountText(nickName.length + '/25');
     }, [nickName]);
     function nickNameHandler (e) {
@@ -371,10 +389,38 @@ function BasicInfo ({ changeLogin }) {
             })
         }
     }
+    const [profileImgURL, setProfileImgURL] = useState(ProfileImage);
+    
+    function filePreview (e) {
+        const formData = new FormData();
+        formData.append("imgFile", e.target.files[0]);
+        axios.post('/api',{
+            headers: {
+                "content-Type": 'multipart/form-data',
+            }, 
+            data: formData})
+            .then((res) => {
+                if(res.success){
+                    preAxios.get('/main/userinfo')
+                    .then((res) => {
+                        setProfileImgURL(res.data.profil_path);
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    })
+                }
+            })
+            .catch((err) => 
+            console.error(err)
+            );
+    }
     return (
         <>
         <ProfileContainer>
-            <ProfileImg src={ProfileImage}/>
+            <label htmlFor="profileUpLoad">
+            <ProfileImg src={profileImgURL}/>
+            <ProfileInput accept="image/jpg, image/png, image/jpeg" type="file" id="profileUpLoad" onChange={filePreview}/>
+            </label>
         </ProfileContainer>
         <InputBoxCon>
             <InfoSubmit onClick={changeLogin}>변경하기</InfoSubmit>
