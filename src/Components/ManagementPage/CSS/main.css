@@ -1,0 +1,35 @@
+*{
+    box-sizing: border-box;
+}
+.main_container {
+    width: 137.6rem;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+}
+.left_container {
+    width: 21.6rem;
+    height: 73.6rem;
+    margin-top: 8.8rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+    background-color: yellow;
+}
+.center_container {
+    width: 114.4rem;
+    height: 73.6rem;
+    margin-top: 8.8rem;
+    margin-left: 1.6rem;
+    background-color: green;
+}
+.management_grid {
+    display: grid;
+    grid-template-columns: 3fr 4fr 3fr;
+    grid-template-rows: 25.6rem 46.4rem;
+    grid-gap: 1.6rem;
+}

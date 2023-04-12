@@ -8,27 +8,9 @@ import profileImg from "../../../image/Profile.png";
 import { useState } from "react";
 import BoxShadow from "../../MainPage/StyleComponents";
 import { useEffect } from "react";
+import preAxios from "../../axios";
 
-// 댓글 더미 데이터 입니다.
-const commentDB = [
-    {
-        image: '',
-        name: '김윤석 매니저',
-        content: '관리자 페이지에서 매니저의 피드백이 반영되면 좋을듯 합니다.:)',
-        id: 1,
-    },
-    {
-        image: '',
-        name: '진승현',
-        content: '피드백 반영하겠습니다. 감사합니다!',
-        id: 2,
-    },
-]
-
-
-
-
-function RecordMainBox ({ item }) {
+function RecordMainBox ({ item, id, category, setRecordArray }) {
    
     const [commentToggle, setCommentToggle] = useState('none');
     const [colorToggle, setColorToggle] = useState('Black');
@@ -59,6 +41,7 @@ function RecordMainBox ({ item }) {
         setWeek(item.week);
     },[item])
 
+    //숫자 적용시 2개 단위로 나눠 .을 넣습니다.
     function modifyEnd () {
         const dateStartArray = dateStart.split('');
         const dateEndArray = dateEnd.split('');
@@ -76,7 +59,34 @@ function RecordMainBox ({ item }) {
         setCrudToggle('none');
         if(!modi) {
             //기록 수정사항 반영 axios를 보냅니다.
-            alert('수정완료!');
+            preAxios.put('/records/input', {
+              category: category,  
+              activityName: activityName,
+              team: team,
+              result: result,
+              capabilities: capability,
+              activity: activity,
+              reflection: reflection,
+              week: week,
+              dateStart: dateStart,
+              dateEnd: dateEnd,
+              id: id,
+            })
+            .then((res) => {
+                //수정된 수정사항을 다시 불러옵니다.
+                preAxios.post('/records/output', {
+                    category: category,
+                })
+                .then((res) => {
+                    alert('수정완료!');
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+            })
+            .catch((err) => {
+                console.error(err);
+            })
         }
     }
     function modifyStart () {
@@ -95,8 +105,7 @@ function RecordMainBox ({ item }) {
         setModi(!modi);
         setCrudToggle('none');
         if(!modi) {
-            //기록 수정사항 반영 axios를 보냅니다.
-            alert('수정완료!');
+            
         }
     }
     function commentClick () {
@@ -105,7 +114,16 @@ function RecordMainBox ({ item }) {
             setColorToggle('#3b85a3');
             setImgToggle(PrimaryUpBtn);
             //해당 게시물 댓글 axios 요청을 보냅니다.
-            setCommentArray(commentDB);
+            preAxios.post('records/commentoutput', {
+                category: category,
+                id: id,
+            })
+            .then((res) => {
+                setCommentArray(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
         } else {
             setCommentToggle('none');
             setColorToggle('black');
@@ -178,20 +196,62 @@ function RecordMainBox ({ item }) {
         setComment(text);
     }
     function commentSubmit (e) {
-        console.log(e.key);
         if (e.key === 'enter') {
             commentSubmitClick();
         }
     }
     function commentSubmitClick () {
         //댓글 정보를 axios로 보냅니다.
-        setCommentArray([...commentArray, {
-            name: '진승현', //이것은 더미데이터에만 있으므로 axios 쿠키정보로 대체합니다.
+        preAxios.put('/records/commentinput', {
+            category: category,
             content: comment,
-            id: [commentArray[commentArray.length]], //이것은 기록게시물의 id정보로 대체합니다. (테이블 key값)
-        }])
-        setComment('');
+            id: id,
+        })
+        .then((res) => {
+            preAxios.post('/records/commentoutput', {
+                category: category,
+                id: id,
+            })
+            .then((res) => {
+                setCommentArray(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+            setComment('');
+        })
+        .catch((err) => {
+            console.error(err)
+        })
     }
+    //게시물 삭제 함수
+    function deleteReflection () {
+      preAxios.delete('/records/delete', {
+        id: id,
+        category: category,
+      })  
+      .then((res) => {
+        if (res.data.success) {
+            preAxios.post('/records/output', {
+            category: category,
+          })
+          .then((res) => {
+            const array = res.data;
+            const reverse = array.reverse();
+            setRecordArray(reverse);
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+            setCrudToggle('none');
+            alert('삭제 성공!');
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      setCrudToggle('none');
+    };
     return (
         <MainContainer>
             <SideContainer>
@@ -238,7 +298,7 @@ function RecordMainBox ({ item }) {
                         <CrudBox display={crudToggle}>
                             {modi ? <CrudBtn color={'black'} onClick={modifyStart}>수정하기</CrudBtn> :
                             <CrudBtn color={COLOR.Primary} onClick={modifyEnd}>완료하기</CrudBtn>}
-                            <CrudBtn color={COLOR.Red}>삭제못함</CrudBtn>
+                            <CrudBtn color={COLOR.Red} onClick={deleteReflection}>삭제하기</CrudBtn>
                         </CrudBox>
                         <CommentCount color={colorToggle}>
                             {`댓글 ${item.count}`}<CommentBtn onClick={commentClick} src={imgToggle} />
@@ -251,8 +311,7 @@ function RecordMainBox ({ item }) {
                             {/* 댓글 배열 렌더링 시작 */}
                             {commentArray.map((item) => {
                                 return (<div key={item.id}>
-                                    {/* profileImg는 item의 image로 바꿉니다. */}
-                                    <CommentWho><CommentBtn src={profileImg} /><CommentWho>{item.name}</CommentWho></CommentWho>
+                                    <CommentWho><CommentBtn src={!item.image ? profileImg : item.image} /><CommentWho>{item.name}</CommentWho></CommentWho>
                                     <CommentContent>
                                     {item.content}
                                     </CommentContent> 

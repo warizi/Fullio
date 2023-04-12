@@ -7,239 +7,11 @@ import RecordInput from "./RecordBox/RecordInput";
 import plusBtn from "../../image/plusBtn.png";
 import { useState } from "react";
 import { useEffect } from "react";
-
-
-// 공통 더미데이터 입니다.
-let commenDB = [
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 1,
-    },
-    {
-        activityName: '내일프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 2,
-    },
-    {
-        activityName: '내일프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 3,
-    },
-    {
-        activityName: '내일프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 4,
-    },
-    {
-        activityName: '내일프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 5,
-    },
-    {
-        activityName: '내일프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 6,
-    },
-    {
-        activityName: '내일프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 7,
-    },
-    {
-        activityName: '내일프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 8,
-    },
-]
-// 심화 더미데이터 입니다. 
-let deepDB = [
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 1,
-    },
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 2,
-    },
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 3,
-    },
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 4,
-    },
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 5,
-    },
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 6,
-    },
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 7,
-    },
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 8,
-    },
-    {
-        activityName: '업프로젝트',
-        team: 'merge/5인/프론트엔드',
-        result: 'BP',
-        capabilities: '성취, React',
-        activity: '기획 / 디자인 / 프론트엔드 / 백엔드와 협업하여 Fullio 홈페이지를 제작하였습니다.',
-        reflection: 'React를 습득하면서 어려운 부분이 많았습니다. 특히 state 관리와 컴포넌트를 나누기가 어려웠습니다.',
-        week: 9,
-        dateStart: '23.02.27',
-        dateEnd: '23.02.27',
-        count:0,
-        id: 9,
-    },
-]
+import preAxios from "../axios";
 
 function MainContainer ({ category, setRemove, remove }) {
     const [recordArray, setRecordArray] = useState([]);
-    const [newRender, setNewRender] = useState(false);//리무브 변화에 따라서 newrander가 없어져야 합니다. 수정 요청
+    const [newRender, setNewRender] = useState(false);//리무브 변화에 따라서 newrander가 없어져야 합니다.
     const [activityName, setActivityName] = useState('');
     const [team, setTeam] = useState('');
     const [result, setResult] = useState('');
@@ -253,7 +25,6 @@ function MainContainer ({ category, setRemove, remove }) {
     function plusClick () {
         //하나씩만 기록 가능할 때
         if (!newRender) {
-            setNewRender(true);
             setRemove(1);
             setActivityName('');
             setTeam('');
@@ -264,21 +35,29 @@ function MainContainer ({ category, setRemove, remove }) {
             setDateEnd('');
             setDateStart('');
             setWeek('');
+            setNewRender(true);
         };
-        //추후 기록 작성 여러개 동시 가능할 때
-        // setArray([...array, array.length]);
-        // remove(array.length);
     }
+
+    //불러오기
     useEffect(() => {
-        if(category === '공통교육'){
-            //열려 있는 입력폼을 초기화 합니다.
-            //공통교육 카테고리 기록을 axios 요청합니다.
-            setRecordArray(commenDB);
-        } else if (category === '심화교육') {
-            //열려 있는 입력폼을 초기화 합니다.
-            //심화교육 카테고리 기록을 axios 요청합니다. 
-            setRecordArray(deepDB);
-        }
+        preAxios.post('/records/output', {
+            category: category,
+        })
+        .then((res) => {
+          const array = res.data;
+          const reverse = array.reverse();
+            setRecordArray(reverse);
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+    }, [category])
+
+    //카테고리 변경시 입력폼이 있고, 이동 허락될 시 삭제
+    useEffect(() => {
+        setNewRender(false);
+        setRemove(0);
     }, [category])
 
     function deleteNewRecord (id) {
@@ -288,10 +67,7 @@ function MainContainer ({ category, setRemove, remove }) {
         };
     }
     function submitNewRecord () {
-        //추가 axios 요청합니다.
-        //요청이 완료 될 시 
-        //더미데이터 전용 id값
-        //하나씩만 가능할 때
+        //작성하지 않은 값이 있으면 적용하지 않습니다.
         if (activityName === '') {
             alert('활동명을 입력해 주세요.')
         } else if (team === '') {
@@ -311,9 +87,9 @@ function MainContainer ({ category, setRemove, remove }) {
         } else if (dateEnd === ''){
             alert('마감일을 입력해 주세요.')
         } else {
-            let idCount = recordArray[recordArray.length - 1].id + 1;
-
-            setRecordArray([{
+            //추가 게시물 생성 Axios 요청 (추가하기)
+            preAxios.put('/records/input', {
+                category: category,
                 activityName: activityName,
                 team: team,
                 result: result,
@@ -323,13 +99,31 @@ function MainContainer ({ category, setRemove, remove }) {
                 week: week,
                 dateStart: dateStart,
                 dateEnd: dateEnd,
-                id: idCount,
-            }, ...recordArray ]);
-            alert('적용 완료!:)');
-            setRemove(0);
-            setNewRender(false);
+            })
+            .then((res) => {
+                if (res.data.success) {
+                    alert('적용 완료!');
+                    setRemove(0);
+                    setNewRender(false);
+                }
+                preAxios.post('/records/output', {
+                    category: category,
+                })
+                .then((res) => {
+                  const array = res.data;
+                  const reverse = array.reverse();
+                    setRecordArray(reverse);
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+
+            })
+            .catch((err) => {
+                alert('저장 실패했습니다.');
+                console.error(err);
+            })
         }
-        
     }
     
     return (
@@ -341,7 +135,6 @@ function MainContainer ({ category, setRemove, remove }) {
             <MainScroll>
             <Plus onClick={plusClick} src={plusBtn} />
             {/* 새로운 입력폼 */}
-            {/* 하나씩만 수정 가능할 때 */}
             {newRender ? <RecordInput 
                 week={week}
                 setWeek={setWeek}
@@ -364,13 +157,9 @@ function MainContainer ({ category, setRemove, remove }) {
                 submit={submitNewRecord} 
                 onClick={deleteNewRecord}/> : 
             <></>}
-            {/* 여러개 가능할 때 */}
-            {/* {array.map((item) => {
-                    return <RecordInput submit={submitNewRecord} onClick={deleteNewRecord} id={item} key={item} />
-            })} */}
             {/* 기존 기록 불러오기 */}
             {recordArray.map((item) => {
-                return <RecordMainBox item={item} key={item.id}/>
+                return <RecordMainBox setRecordArray={setRecordArray} category={category} item={item} key={item.id} id={item.id}/>
             })}
             </MainScroll>
         </MainBox>

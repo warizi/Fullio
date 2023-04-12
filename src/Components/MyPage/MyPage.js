@@ -12,8 +12,10 @@ import cancelImage from '../../image/cancelMy.png';
 import upImage from '../../image/upBtn.png';
 import downImage from '../../image/downBtn.png';
 import preAxios from "../axios";
-import PwChange from "./IdPwBox.js/PwChange";
+import PwChange from "./IdPwBox/PwChange";
 import axios from "axios";
+import PhotoSrc from "../../image/photo.png";
+
 const InputContainer = styled.div`
     width: ${props => props.width};
     display: inline-block;
@@ -73,6 +75,7 @@ const ProfileImg = styled.img`
     border-radius: 999rem;
 `;
 const ProfileInput = styled.input`
+    display: none;
     opacity: 0;
     position: absolute;
     width: 3.2rem;
@@ -245,6 +248,15 @@ function BasicInfo ({ changeLogin }) {
     const [alertEmail, setAlertEmail] = useState('none');
     //인풋 핸들러
     useEffect(() => {
+        preAxios.get('/main/userinfo')
+        .then((res) => {
+            setProfileImgURL(res.data.profil_path);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+    }, []);
+    useEffect(() => {
         preAxios.get('/mypage/name')
         .then((res) => {
             if(res.status === 200) {
@@ -390,17 +402,15 @@ function BasicInfo ({ changeLogin }) {
         }
     }
     const [profileImgURL, setProfileImgURL] = useState(ProfileImage);
-    
-    function filePreview (e) {
+
+    function fileAxios (e) {
         const formData = new FormData();
-        formData.append("imgFile", e.target.files[0]);
-        axios.post('/api',{
+        formData.append("file", e.target.files[0]);
+        axios.put('http://localhost:8000/api/files/image', formData ,{ 
             headers: {
                 "content-Type": 'multipart/form-data',
-            }, 
-            data: formData})
+            }})
             .then((res) => {
-                if(res.success){
                     preAxios.get('/main/userinfo')
                     .then((res) => {
                         setProfileImgURL(res.data.profil_path);
@@ -408,7 +418,6 @@ function BasicInfo ({ changeLogin }) {
                     .catch((err) => {
                         console.error(err);
                     })
-                }
             })
             .catch((err) => 
             console.error(err)
@@ -417,9 +426,12 @@ function BasicInfo ({ changeLogin }) {
     return (
         <>
         <ProfileContainer>
+            <ProfileImg src={profileImgURL ? profileImgURL : ProfileImage}/>
+            <ProfileInput accept="image/jpg, image/png, image/jpeg, image/" type="file" id="profileUpLoad" onChange={fileAxios}/>
             <label htmlFor="profileUpLoad">
-            <ProfileImg src={profileImgURL}/>
-            <ProfileInput accept="image/jpg, image/png, image/jpeg" type="file" id="profileUpLoad" onChange={filePreview}/>
+            <ImgCircle>
+                <PhotoImg src={PhotoSrc} alt="프로필 사진 추가"/>
+            </ImgCircle>
             </label>
         </ProfileContainer>
         <InputBoxCon>
@@ -435,7 +447,23 @@ function BasicInfo ({ changeLogin }) {
         </>
     )
 }
-
+const PhotoImg = styled.img`
+    width: 2.4rem;
+    height: 2.4rem;
+`;
+const ImgCircle = styled.div`
+    position: absolute;
+    border-radius: 999rem;
+    width: 3.2rem;
+    height: 3.2rem;
+    background-color: ${COLOR.GSD9};
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
 const InterestMainBox = styled.div`
     display: flex;
     flex-direction: row;
@@ -1054,8 +1082,8 @@ function Interest () {
         .catch((error) => {
             console.error(error);
         })
+        
     }, [])
-
    
     return (
         <InterestMainBox>

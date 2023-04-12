@@ -6,26 +6,20 @@ import rightBtn from "../../image/rightBtn.png";
 import downABtn from "../../image/downBtn.png";
 import plusBtn from "../../image/plusBtn.png";
 import { useState } from "react";
+import preAxios from "../axios";
 
-const dragDBA = [
-    {
-        title: '내일프로젝트',
-    },
-    {
-        title: '업프로젝트',
-    },
-    {
-        title: 'CoP',
-    },
-    {
-        title: '프론트엔드 스터디',
-    },
-]
+const dragDBA = [];
 
 let dragStartIndex = null;
 let dragEnterIndex = null;
 
 function NavContainer ({ title, category, onChange, remove, setRemove }) {
+    const [newCategoryText, setNewCategoryText] = useState('');
+    const [newCategoryToggle, setNewCategoryToggle] = useState(false);
+    const [modalDisplay, setModalDisplay] = useState('none');
+    const [categoryIndex, setCategoryIndex] = useState(0);
+    const [deleteCategoryX, setDeleteCatgoryX] = useState(0);
+    const [deleteCategoryY, setDeleteCatgoryY] = useState(0);
     const tagImgSrc = waveRecord;
     const rightImgSrc = rightBtn;
     const plusImgSrc = plusBtn;
@@ -53,7 +47,7 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
         }else {
             if(window.confirm("수정하던 기록이 있습니다. 이동하시겠습니까?")){
                 onChange('공통교육');
-                setRemove(0);
+                setRemove(1);
             }
         }
     }
@@ -63,47 +57,101 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
         }else {
             if(window.confirm("수정하던 기록이 있습니다. 이동하시겠습니까?")){
                 onChange('심화교육');
-                setRemove(0);
+                setRemove(1);
             }
         }
     }
     function dragStart (e, index) {
         dragStartIndex = index;
-        console.log('스타트 인덱스', index);
     }
     function dragEnter (e, index) {
         dragEnterIndex = index;
-        const startDBIndex = dragDB[dragStartIndex];
-        const enterDBIndex = dragDB[dragEnterIndex];
-        const dbNew = [...dragDB];
-        const enterindex = dbNew.indexOf(enterDBIndex);
-        dbNew.splice(enterindex + 1, 0, startDBIndex);
-        setDragDB([...dbNew]);
-        console.log('엔터 인덱스', index);
-    }
-    function dragLeave (e, index) {
-        const startDBIndex = dragDB[dragStartIndex];
-        const enterDBIndex = dragDB[dragEnterIndex];
-        const dbNew = [...dragDB];
-        const enterindex = dbNew.indexOf(enterDBIndex);
-        dbNew.splice(enterindex + 1, 1);
-        console.log('지워짐', dbNew);
-        setDragDB([...dbNew]);
-        console.log('리브 인덱스', index);
-    }
-    function dragEnd (e, index) {
         // const startDBIndex = dragDB[dragStartIndex];
         // const enterDBIndex = dragDB[dragEnterIndex];
         // const dbNew = [...dragDB];
-        // dbNew.splice(dragStartIndex, 1);
         // const enterindex = dbNew.indexOf(enterDBIndex);
         // dbNew.splice(enterindex + 1, 0, startDBIndex);
         // setDragDB([...dbNew]);
+    }
+    function dragLeave (e, index) {
+        // const startDBIndex = dragDB[dragStartIndex];
+        // const enterDBIndex = dragDB[dragEnterIndex];
+        // const dbNew = [...dragDB];
+        // const enterindex = dbNew.indexOf(enterDBIndex);
+        // dbNew.splice(enterindex + 1, 1);
+        // setDragDB([...dbNew]);
+    }
+    function dragEnd (e, index) {
+        const startDBIndex = dragDB[dragStartIndex];
+        const enterDBIndex = dragDB[dragEnterIndex];
+        const dbNew = [...dragDB];
+        dbNew.splice(dragStartIndex, 1);
+        const enterindex = dbNew.indexOf(enterDBIndex);
+        dbNew.splice(enterindex + 1, 0, startDBIndex);
+        setDragDB([...dbNew]);
         dragStartIndex = null;
         dragEnterIndex = null;
+        //드래그 앤 드랍을 마치면 변경 사항을 서버에 적용 Axios를 보냅니다.
+        preAxios.put('카테고리 변경사항 URL', dragDB)
+        .then((res) => {
+            if(res.data.success) {
+                //카테고리 리스트를 다시 불러옵니다. 
+                preAxios.get('카테고리 불러오는 URL')
+                .then((res) => {
+                    setDragDB(res.data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+        })
     }
-
-    return (
+    function categoryMouseDown (e, index) {
+        if(e.button === 2) {
+            const x = Math.abs(e.pageX);
+            const y = Math.abs(e.pageY);
+            setDeleteCatgoryX(x);
+            setDeleteCatgoryY(y);
+            setModalDisplay('block');
+            setCategoryIndex(index);
+            console.log(categoryIndex);
+        }
+    }
+    window.addEventListener('click', () => {
+        console.log('윈도우 클릭');
+        setModalDisplay('none');
+    })
+    function categryContextMenu (e) {
+        e.preventDefault();
+    }
+    function deleteCateroryBtn () {
+        const deleteDB = dragDB;
+        deleteDB.splice(categoryIndex, 1);
+        setDragDB(deleteDB);
+    }
+    function newCategoryBtn() {
+        setNewCategoryToggle(true);
+    }
+    function newCategoryTextHanler (e) {
+        const text = e.target.value;
+        setNewCategoryText(text);
+    }
+    function submitNewCategory (e) {
+        if (e.key === "Enter") {
+            const newCategory = {
+                title: newCategoryText,
+            }
+            const newDB = dragDB;
+            dragDB.push(newCategory);
+            setNewCategoryToggle(false);
+            setNewCategoryText('');
+            setDragDB(dragDB);
+        }
+    }
+     return (
         <NavBoxContainer>
             <Title>{title}</Title>
             <BasicCategory>
@@ -124,71 +172,60 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
                 <ListBox>
                     <TagImg  src={tagImgSrc} />
                     <Div title='true'>활동 기록</Div>
-                    <TagImg btn={true}  src={plusImgSrc} />
+                    <TagImg btn={true}  src={plusImgSrc} onClick={newCategoryBtn}/>
                 </ListBox>
                 
-                <ListBox draggable={true}>
-                    <TagImg onClick={downClick} btn={true} src={img} />
-                    <Div>내일프로젝트</Div>
-                </ListBox>
-                        <DownCon display={dis}>
-                        <ListBox>
-                            <TagImg btn={true} src={rightImgSrc} />
-                            <Div>내일프로젝트1</Div>
-                        </ListBox>
-                        <ListBox>
-                            <TagImg btn={true} src={rightImgSrc} />
-                            <Div>내일프로젝트2</Div>
-                        </ListBox>
-                        </DownCon>
-                <ListBox draggable={true}>
-                    <TagImg btn={true} src={rightImgSrc} />
-                    <Div >특강</Div>
-                </ListBox>
-                <ListBox>
-                    <TagImg btn={true} src={rightImgSrc} />
-                    <Div>CoP</Div>
-                </ListBox>
-                <ListBox>
-                    <TagImg btn={true} src={rightImgSrc} />
-                    <Div>토익 스터디</Div>
-                </ListBox>
-                <ListBox>
-                    <TagImg btn={true} src={rightImgSrc} />
-                    <Div>GA4 스터디</Div>
-                </ListBox>
-            {/* 드래그 앤 드랍 연습 시작 */}
-            <hr></hr>
-            {dragDB.map((item, index) => {
-                return    <DragListBox 
-                            draggable 
-                            key={index}
-                            onDragStart={(e) => dragStart(e, index)}
-                            onDragEnter={(e) => dragEnter(e, index)}
-                            onDragEnd={(e) => dragEnd(e, index)}
-                            onDragLeave={(e) => dragLeave(e, index)}
-                        >
-                           {item.title}
-                        </DragListBox>
-            })}
-            {/* 드래그 앤 드랍 연습 끝 */}
-
-
+                {dragDB.map((item, index) => {
+                     return (       
+                            <ListBox 
+                                onContextMenu={categryContextMenu}
+                                onMouseDown={(e) => categoryMouseDown(e, index)}
+                                draggable
+                                key={index}
+                                onDragStart={(e) => dragStart(e, index)}
+                                onDragEnter={(e) => dragEnter(e, index)}
+                                onDragEnd={(e) => dragEnd(e, index)}
+                                onDragLeave={(e) => dragLeave(e, index)}
+                            >
+                                <TagImg btn={true} src={rightImgSrc} />
+                                <Div>{item.title}</Div>
+                            </ListBox>
+                            )
+                })}
+                {newCategoryToggle ? 
+                    <ListBox>
+                        <TagImg btn={true} src={rightImgSrc} />
+                        <NewCategoryInput placeholder="새로운 활동" value={newCategoryText} onChange={newCategoryTextHanler} onKeyDown={submitNewCategory}/>
+                    </ListBox>
+                : <></>}
             </CustomCategory>
+            <DeleteCategryBox display={modalDisplay} onContextMenu={categryContextMenu} deleteCategoryX={deleteCategoryX} deleteCategoryY={deleteCategoryY} onClick={deleteCateroryBtn}>삭제</DeleteCategryBox>
         </NavBoxContainer>
     )
 }
-
-//드래그 앤 드랍 연습 시작 
-
-const DragListBox = styled.div`
-    width: 18rem;
-    height: 3rem;
-    background-color: ${COLOR.Primary};
-    cursor: pointer;
-    margin-bottom: 1rem;
+//카테고리 추가 input 
+const NewCategoryInput = styled.input`
+    vertical-align: 20%;   
+    border-radius: 0.8rem;
+    border: 1px solid ${COLOR.GSD9};
+    height: 2.4rem;
+    width: 14rem;
 `;
-
+//카테고리 삭제 창
+const DeleteCategryBox = styled.div`
+    display: ${props => props.display};
+    position: absolute;
+    top: ${props => props.deleteCategoryY + 1}px;
+    left: ${props => props.deleteCategoryX + 1}px;
+    width: 100px;
+    height: 40px;
+    background-color: white;
+    z-index: 9999;
+    font-size: 1.6rem;
+    line-height: 40px;
+    padding-left: 4rem;
+    ${BoxShadow};
+`;
 //드래그 앤 드랍 연습 끝
 const DownCon = styled.div`
     display: ${props => props.display};

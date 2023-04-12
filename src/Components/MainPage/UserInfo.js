@@ -116,7 +116,7 @@ const CommentInput = styled.input`
     border-radius: 0.8rem;
     text-align: center;
 `;
-function UserInfo({ name, nickname, motto, number, strength }) {
+function UserInfo({ name, nickname, motto, number, strength, profilPath }) {
     const [noticeToggle, setNoticeToggle] = useState(false);
     const NoticeImage = NoticeImg;
     const movePage = useNavigate();
@@ -585,7 +585,7 @@ function UserInfo({ name, nickname, motto, number, strength }) {
             {noticeToggle ? <NoticeBox/> : null}
             <Notice onClick={NoticeClick}/>
             {true ?<RedDot onClick={NoticeClick}/> : null}
-            <img src={userInfoImg} className='info-img' alt='프로필 사진' />
+            <img src={!profilPath ? userInfoImg : profilPath} className='info-img' alt='프로필 사진' />
             <span>{name + '/' + number}</span>
             <span className='info-email'>{nickname}</span>
             <Button 

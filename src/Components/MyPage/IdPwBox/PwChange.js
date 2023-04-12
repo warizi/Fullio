@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import COLOR from "../../MainPage/COLOR";
+import { useState } from "react";
 
 
 function PwChange ({ cancelChange }) {
-    const [pwText, setPwText] = 
+    const [pwText, setPwText] = useState();
     function submitChange () {
         alert('비밀번호 변경');
         cancelChange();
@@ -19,7 +20,7 @@ function PwChange ({ cancelChange }) {
                 <PwInput type="password" placeholder="새 비밀번호 확인"/>
                 <AlertText></AlertText>
                 <PwBtn color={true} onClick={cancelChange}>변경 취소</PwBtn>
-                <PwBtn color={false} onClick={submitChange}>확인</PwBtn>
+                <PwBtn color={false} >확인</PwBtn>
             </PwContainer>
         </ViewBack>
     )

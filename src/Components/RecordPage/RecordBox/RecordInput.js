@@ -5,32 +5,26 @@ import checkImg from "../../../image/noneCircle.png";
 function RecordInput ({week, setWeek, dateStart, setDateStart, dateEnd, setDateEnd, capability, setCapability, activity, setActivity, reflection, setReflection, onClick, id, submit, setActivityName, activityName, team, setTeam, result, setResult }) {
     function activityNameOnChange (e) {
         const text = e.target.value;
-        console.log(activityName);
         setActivityName(text);
     }
     function teamOnChange (e) {
         const text = e.target.value;
-        console.log(team);
         setTeam(text);
     }
     function resultOnChange (e) {
         const text = e.target.value;
-        console.log(result);
         setResult(text);
     }
     function capabilityOnChange (e) {
         const text = e.target.value;
-        console.log(capability);
         setCapability(text);
     }
     function activityOnChange (e) {
         const text = e.target.value;
-        console.log(activity);
         setActivity(text);
     }
     function reflectionOnChange (e) {
         const text = e.target.value;
-        console.log(reflection);
         setReflection(text);
     }
     function weekChange (e) {

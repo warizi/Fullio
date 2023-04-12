@@ -146,7 +146,7 @@ function Main() {
                     <MonthRecord value={getRecord} />
                 </div>
                 <div className='right-container'>
-                    <UserInfo motto={getUserInfo.motto} nickname={getUserInfo.nickName} number={getUserInfo.memberNumber} name={getUserInfo.name} strength={getStrength}/>
+                    <UserInfo motto={getUserInfo.motto} nickname={getUserInfo.nickName} number={getUserInfo.memberNumber} name={getUserInfo.name} strength={getStrength} profilPath={getUserInfo.profil_path}/>
                 </div>
             </div>
         </>
