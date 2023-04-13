@@ -164,15 +164,6 @@ function SkillGraph ({ id,value, title, onClick }) {
             case 2: {
                 setValueText(getValue);
                 setTitleText(getTitle);
-                // if (keyvalue === 1) {
-                //     setTitleText(titleA);
-                // } else if (keyvalue === 2) {
-                //     setTitleText(titleB);
-                // } else if (keyvalue === 3) {
-                //     setTitleText(titleC);
-                // } else if (keyvalue === 4) {
-                //     setTitleText(titleD);
-                // }
                 if (inputToggle) {
                     //input에서 넘어갈 경우 axios로 정보 보내기
                    setGetValue(valueText);
@@ -273,11 +264,14 @@ function MySkill({ onClick }) {
             <Float>
                 {skill.map((item, index) => {
                     let textSlice = '';
-                    if (item.title.length > 6){
-                        textSlice = item.title.slice(0, 5) + '..';
-                    } else {
-                        textSlice = item.title;
-                    }
+                    if(item.title === null){
+                        textSlice = '';
+                      } else if (item.title.length > 6){
+                          textSlice = item.title.slice(0, 5) + '..';
+                      } else {
+                          textSlice = item.title;
+                      }
+                    
                     return <SkillGraph 
                             onClick={() => testClick(index)} 
                             value={item.count} 

@@ -1,181 +1,10 @@
 import styled from "styled-components"
 import BoxShadow from "../MainPage/StyleComponents";
 import { useState } from "react";
-import COLOR from "./COLOR";
+import COLOR from "../MainPage/COLOR";
 import SelectLeft from "../../image/selector_left.png"
 import SelectRight from "../../image/selector_right.png"
 import ScheduleWrite from "../../image/Write.png"
-
-
-const CalendarContainer = styled.div`
-    position: relative;
-    background-color: ${COLOR.White};
-    width: 33.2rem;
-    height: 40.1rem;
-    border-radius: 0.8rem;
-    ${BoxShadow}
-    grid-column: 1/2;
-    grid-row: 1/2;
-    background-size: cover;
-    background-repeat: no-repeat;
-    overflow: hidden;
-`;
-const UpCalendar = styled.div`
-    background-color: ${COLOR.White};
-    width: 33.2rem;
-    height: 29.6rem; 
-    padding: 1.6rem;
-    overflow: hidden;
-    transition: 0.5s;
-    z-index: 100;
-
-`;
-const UpCalTitle = styled.div`
-    width: 30rem;
-    height: 2.4rem;
-    background-color: ${COLOR.White};
-    margin-bottom: 1rem;
-    font-size: 1.6rem;
-    color: #737373;
-    display: flex;
-    justify-content: space-between;
-`;
-const CalListBox = styled.div`
-    width: 30rem;
-    height: 22.4rem;
-    // background-color: ${COLOR.Primary};
-`;
-
-//달력 리스트입니다.
-const DayItemContainer = styled.li`
-    display: inline-block;
-    width: 4.286rem;
-    height: 3.2rem;
-    margin: 0.1rem 0;
-    text-align: center;
-    line-height: 3.2rem;
-    font-size: 1.6rem;
-    position: relative;
-`;
-//달력 list 선택 css 기능 
-const ItemLeftBox = styled.div`
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 2.143rem;
-    height: 3.2rem;
-    background-color: ${props => props.colorA};
-    z-index: 10;
-`;
-const ItemRightBox = styled.div`
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 2.143rem;
-    height: 3.2rem;
-    background-color: ${props => props.colorA};
-    z-index: 10;
-`;
-const ItemCircle = styled.div`
-    width: 3.2rem;
-    height: 3.2rem;
-    border-radius: 9999px;
-    background-color: ${props => props.color};
-    position: absolute;
-    top: 0;
-    left: 0.586rem;
-    z-index: 11;
-    overflow: hidden;
-    cursor: pointer;
-    color: ${props => props.fontColor};
-
-    &:hover {
-        background-color: ${COLOR.SecondaryDark};
-        color: ${COLOR.White};
-    }
-`;
-const Span = styled.span`
-    -webkit-user-select:none;ßß
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none
-`;
-const Week = styled.div`
-    width: 4.286rem;
-    height: 2.4rem;
-    display: inline-block;
-    text-align: center;
-`;
-
-const PrevButton = styled.button`
-    width: 2.4rem;
-    height: 2.4rem;
-    border: none;
-    cursor: pointer;
-    background-image: url(${SelectLeft});
-    background-size: cover;
-`;
-const NextButton = styled.button`
-    width: 2.4rem;
-    height: 2.4rem;
-    border: none;
-    cursor: pointer;
-    background-image: url(${SelectRight});
-    background-size: cover;
-`;
-const Hr = styled.hr`
-    width: 28.2rem;
-`;
-const ScheduleContainer = styled.div`
-    position: absolute;
-    bottom: 0.3rem;
-    left: 0;
-    width: 32rem;
-    height: 9.5rem;
-    margin: 0 1.6rem;
-    padding: 1rem 0;
-    overflow: scroll;
-    z-index: 100;
-    transition: 0.5s;
-
-`;
-const ScheduleItem = styled.div`
-    height: 2rem;
-    width: 24.5rem;
-    font-size: 1.4rem;
-    color: ${COLOR.GS14};
-    margin-bottom: 0.8rem;
-`;
-const ScheduleCircle = styled.div`
-    display: inline-block;
-    width: 1.2rem;
-    height: 1.2rem;
-    border-radius: 999rem;
-    background-color: ${COLOR.PrimaryLight};
-    margin-right: 1rem;
-`;
-const CrudSchedule = styled.button`
-    width: 4.8rem;
-    height: 4.8rem;
-    border-radius: 999rem;
-    position: absolute;
-    right: 1.6rem;
-    bottom: 1.6rem;
-    background-color: ${COLOR.Primary};
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    filter: drop-shadow(0px 6px 10px rgba(0, 0, 0, 0.14)) drop-shadow(0px 1px 18px rgba(0, 0, 0, 0.12)) drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.2));
-    cursor: pointer;
-`;
-const WriteImg = styled.img`
-    width: 2.4rem;
-    height: 2.4rem;
-`;
 
 //메인 
 function CalendarBox () {
@@ -314,8 +143,8 @@ function CalendarBox () {
     const schedule = [];
     function RenderSchedule () {
         const schedule1 = '첫번째 스케줄';
-        const schedule2 = '두번째 스케줄 뭐하지 뭐할까';
-        const schedule3 = '세번째 스케주우우우우우우우우울';
+        const schedule2 = '두번째 스케줄';
+        const schedule3 = '세번째 스케줄';
         schedule.push(schedule1);
         schedule.push(schedule2);
         schedule.push(schedule3);
@@ -358,6 +187,174 @@ function CalendarBox () {
         </CalendarContainer>
     )
 }
+
+const CalendarContainer = styled.div`
+    position: relative;
+    background-color: ${COLOR.White};
+    width: 33.2rem;
+    height: 100%;
+    border-radius: 0.8rem;
+    ${BoxShadow}
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+`;
+const UpCalendar = styled.div`
+    background-color: ${COLOR.White};
+    width: 33.2rem;
+    height: 29.6rem;
+    padding: 1.6rem;
+    overflow: hidden;
+    transition: 0.5s;
+    z-index: 100;
+
+`;
+const UpCalTitle = styled.div`
+    width: 30rem;
+    height: 2.4rem;
+    background-color: ${COLOR.White};
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #737373;
+    display: flex;
+    justify-content: space-between;
+`;
+const CalListBox = styled.div`
+    width: 30rem;
+    height: 22.4rem;
+    // background-color: ${COLOR.Primary};
+`;
+
+//달력 리스트입니다.
+const DayItemContainer = styled.li`
+    display: inline-block;
+    width: 4.286rem;
+    height: 3.2rem;
+    margin: 0.1rem 0;
+    text-align: center;
+    line-height: 3.2rem;
+    font-size: 1.6rem;
+    position: relative;
+`;
+//달력 list 선택 css 기능 
+const ItemLeftBox = styled.div`
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2.143rem;
+    height: 3.2rem;
+    background-color: ${props => props.colorA};
+    z-index: 10;
+`;
+const ItemRightBox = styled.div`
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2.143rem;
+    height: 3.2rem;
+    background-color: ${props => props.colorA};
+    z-index: 10;
+`;
+const ItemCircle = styled.div`
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 9999px;
+    background-color: ${props => props.color};
+    position: absolute;
+    top: 0;
+    left: 0.586rem;
+    z-index: 11;
+    overflow: hidden;
+    cursor: pointer;
+    color: ${props => props.fontColor};
+
+    &:hover {
+        background-color: ${COLOR.SecondaryDark};
+        color: ${COLOR.White};
+    }
+`;
+const Span = styled.span`
+    -webkit-user-select:none;ßß
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
+`;
+const Week = styled.div`
+    width: 4.286rem;
+    height: 2.4rem;
+    display: inline-block;
+    text-align: center;
+`;
+
+const PrevButton = styled.button`
+    width: 2.4rem;
+    height: 2.4rem;
+    border: none;
+    cursor: pointer;
+    background-image: url(${SelectLeft});
+    background-size: cover;
+`;
+const NextButton = styled.button`
+    width: 2.4rem;
+    height: 2.4rem;
+    border: none;
+    cursor: pointer;
+    background-image: url(${SelectRight});
+    background-size: cover;
+`;
+const Hr = styled.hr`
+    width: 28.2rem;
+`;
+const ScheduleContainer = styled.div`
+    position: absolute;
+    left: 0;
+    width: 32rem;
+    height: 9.5rem;
+    margin: 0 1.6rem;
+    padding: 1rem 0;
+    overflow: scroll;
+    z-index: 100;
+    transition: 0.5s;
+
+`;
+const ScheduleItem = styled.div`
+    height: 2rem;
+    width: 24.5rem;
+    font-size: 1.4rem;
+    color: ${COLOR.GS14};
+    margin-bottom: 0.8rem;
+`;
+const ScheduleCircle = styled.div`
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 999rem;
+    background-color: ${COLOR.PrimaryLight};
+    margin-right: 1rem;
+`;
+const CrudSchedule = styled.button`
+    width: 4.8rem;
+    height: 4.8rem;
+    border-radius: 999rem;
+    position: absolute;
+    right: 1.6rem;
+    bottom: 1.6rem;
+    background-color: ${COLOR.Primary};
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    filter: drop-shadow(0px 6px 10px rgba(0, 0, 0, 0.14)) drop-shadow(0px 1px 18px rgba(0, 0, 0, 0.12)) drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.2));
+    cursor: pointer;
+`;
+const WriteImg = styled.img`
+    width: 2.4rem;
+    height: 2.4rem;
+`;
+
 
 export default CalendarBox;
 
