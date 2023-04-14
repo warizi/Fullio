@@ -139,16 +139,18 @@ function ManagementMain () {
                 </section>
                 <CalendarBox />
                 <section className="record_management">
-                    {/* <div className="border"></div> */}
-                    <div className="week_container">
-                        <div className="week_title">
-                            {renderArray}
+                    <div className="record_scroll">
+                        {/* <div className="border"></div> */}
+                        <div className="week_container">
+                            <div className="week_title">
+                                {renderArray}
+                            </div>
+                            {checkDB.map((item, index) => {
+                                return(
+                                    <CheckLog index={index} key={index} item={item} />
+                                )
+                            })}
                         </div>
-                        {checkDB.map((item, index) => {
-                            return(
-                                <CheckLog index={index} key={index} item={item} />
-                            )
-                        })}
                     </div>
                 </section>
             </div>

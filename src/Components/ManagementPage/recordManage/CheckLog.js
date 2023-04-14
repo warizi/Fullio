@@ -6,12 +6,12 @@ import grayCheck from "../../../image/nocheck.png";
 function CheckLog ({ index, item }) {
     return (
         <Container index={index}>
-                {item.map((item, index) => {
+                {item.map((item, indexIn) => {
                     if (typeof(item) === 'string') {
-                        return <Name>{item}</Name>
+                        return <Name index={index}>{item}</Name>
                     } else {
                         return (
-                                <Week key={index}>
+                                <Week key={indexIn}>
                                     {item ? 
                                     <CheckImg src={greenCheck} alt="체크됨"/> : 
                                     (item === null ? 
@@ -37,6 +37,8 @@ const Week = styled.div`
     align-items: center;
 `;
 const Name = styled.div`
+    border-radius: 0.8rem 0 0 0.8rem;
+    z-index: 19;
     position: -webkit-sticky;
     position: sticky;
     left: 0;
@@ -47,6 +49,9 @@ const Name = styled.div`
     color: black;
     text-align: center;
     margin-right: 1rem;
+    background-color: ${props => 
+        !(props.index % 2 === 0) ? 'white' : 'rgba(233, 244, 248, 1)'
+    };
 `;
 const Container = styled.div`
     display: flex;
@@ -55,11 +60,14 @@ const Container = styled.div`
     height: 4rem;
     border-radius: 0.8rem;
     background-color: ${props => 
-        !(props.index % 2 === 0) ? 'rgba(0,0,0,0)': 'rgba(140, 201, 225, 0.2)'
+        !(props.index % 2 === 0) ? 'rgba(0,0,0,0)': 'rgba(233, 244, 248, 1)'
     };
 
     &:hover {
-        background-color: rgba(59, 133, 163, 0.3);
+        background-color: rgba(158, 193, 208, 1);
+    }
+    &:hover div {
+        background-color: rgba(158, 193, 208, 1);
     }
 `;
 export default CheckLog;
