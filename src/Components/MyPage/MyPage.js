@@ -1246,9 +1246,9 @@ function MyMainBox({ changeLogin }) {
     }
     return (
         <MainContainer>
-            <InputBox 
-                width={'82.4rem'} 
-                title={'기본 정보'} 
+            <InputBox
+                width={'82.4rem'}
+                title={'기본 정보'}
                 contents={<BasicInfo changeLogin={changeLogin}/>}
             />
             <CommentBox>

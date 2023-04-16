@@ -1,0 +1,16 @@
+*{
+    box-sizing: border-box;
+};
+.top_container {
+    height: 20rem;
+
+};
+.main-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.arrow {
+    width: 10rem;
+}

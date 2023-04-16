@@ -1,0 +1,57 @@
+*{
+    box-sizing: border-box;
+}
+.main_container {
+    width: 137.6rem;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.left_container {
+    width: 21.6rem;
+    height: 73.6rem;
+    margin-top: 8.8rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+}
+.logo_image {
+    width: 3.7rem;
+    height: 5.6rem;
+    position: absolute;
+    transform: translateY(-7.2rem);
+    cursor: pointer;
+}
+.main_content_box {
+    position: relative;
+    width: 114.6rem;
+    height: 73.6rem;
+    margin-left: 1.6rem;
+    margin-top: 8.8rem;
+}
+.profile_img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 999rem;
+    cursor: pointer;
+}
+.profile_container {
+    position: absolute;
+    top: -6rem;
+    right: 0;
+}
+.profile_title {
+    display: flex;
+    flex-direction: row;
+}
+.profile_title p {
+    margin: 0;
+    font-size: 1.2rem;
+}
+.p_container {
+    display: inline-block;
+    height: 5rem;
+}

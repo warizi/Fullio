@@ -14,6 +14,7 @@ import ready from "../../image/ready.png";
 import profileImg from "../../image/Profile.png";
 import PrimaryBasicButton from "../Layout/PrimaryBasicButton";
 import CheckLog from "./recordManage/CheckLog";
+import logoImg from "../../image/LogoImage.png";
 
 const noticeDB = [
     {
@@ -99,7 +100,7 @@ function ManagementMain () {
 
     };
     function myPageMove () {
-        alert('myPage 이동');
+        movePage('/management/mypage');
     };
 
     const renderArray = [];
@@ -110,6 +111,7 @@ function ManagementMain () {
     return (
         <div className="main_container">
             <div className="left_container">
+                <Logimg  src={logoImg} alt="로고 이미지" />
                 <NavLayout content={<>
                     <ButtonLayout title={'인재관리'} onClick={foo}/>
                     <ButtonLayout title={'성찰일지 관리'} onClick={foo}/>
@@ -157,6 +159,13 @@ function ManagementMain () {
         </div>
     )
 };
+const Logimg = styled.img`
+    position: absolute;
+    width: 3.7rem;
+    height: 5.6rem;
+    transform: translateY(-7.2rem);
+    cursor: pointer;
+`;
 const TitleItem = styled.div`
     width: 6.4rem;
     height: 2.4rem;

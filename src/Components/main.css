@@ -44,11 +44,11 @@ body {
 }
 
 @media (min-width: 1550px) {
-    html { font-size: 60%; }
+    html { font-size: 50%; }
 }
 @media (min-width: 1700px) {
-    html { font-size: 70%; }
+    html { font-size: 60%; }
 }
 @media (min-width: 1900px) {
-    html { font-size: 75%; }
+    html { font-size: 60%; }
 }
