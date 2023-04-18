@@ -34,8 +34,17 @@ function ManageMyPage () {
             console.error(new Error("로그아웃 중 에러 발생"));
         });
     };
-    function foo() {
-        alert('버튼 동작');
+    function movePageClick(e) {
+        const title = e.target.innerHTML;
+        if (title === '담당 인재 설정') {
+            movePage('/management/personincharge');
+        } else if (title === '성찰일지') {
+            movePage('/management/record');
+        } else if (title === '공지사항') {
+            movePage('/management/announcement');
+        } else {
+            alert('업데이트 예정');
+        }
     }
     function fileAxios (e) {
         const formData = new FormData();
@@ -66,9 +75,6 @@ function ManageMyPage () {
     function moveMain () {
         movePage('/management');
     }
-    function personInChargeMove () {
-        movePage('/management/personincharge');
-    }
     return (
         <>
         <main className="main-container">
@@ -76,12 +82,12 @@ function ManageMyPage () {
                 <Logimg src={logoimg} alt="풀리오" onClick={moveMain}/>
                 <NavLayout content={
                 <>
-                    <ButtonLayout title={'공지사항'} onClick={foo} />
-                    <ButtonLayout title={'담당 인재 설정'} onClick={personInChargeMove} />
-                    <ButtonLayout title={'성찰일지'} onClick={foo} />
-                    <ButtonLayout title={'인재관리'} onClick={foo} />
-                    <ButtonLayout title={'사례관리'} onClick={foo} />
-                    <ButtonLayout title={'챌린지'} onClick={foo} />
+                    <ButtonLayout title={'공지사항'} onClick={(e) => movePageClick(e)} />
+                    <ButtonLayout title={'담당 인재 설정'} onClick={(e) => movePageClick(e)} />
+                    <ButtonLayout title={'성찰일지'} onClick={(e) => movePageClick(e)} />
+                    <ButtonLayout title={'인재관리'} onClick={(e) => movePageClick(e)} />
+                    <ButtonLayout title={'사례관리'} onClick={(e) => movePageClick(e)} />
+                    <ButtonLayout title={'챌린지'} onClick={(e) => movePageClick(e)} />
                 </>}/>
                 <WaveButton onClick={clickLogout}>로그아웃</WaveButton>
             </nav>

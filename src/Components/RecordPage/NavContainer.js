@@ -7,6 +7,7 @@ import downABtn from "../../image/downBtn.png";
 import plusBtn from "../../image/plusBtn.png";
 import { useState } from "react";
 import preAxios from "../axios";
+import { useEffect } from "react";
 
 const dragDBA = [];
 
@@ -29,6 +30,17 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
     const [img, setImg] = useState(rightBtn);
     const [dis, setDis] = useState('none');
 
+    useEffect(() => {
+        preAxios.post('logs/output', {
+            category: 'title',
+        })
+        .then((res) => {
+            setDragDB([...res.data]);
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+    }, [])
 
     function downClick () {
         if(img === rightBtn) {
@@ -92,11 +104,13 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
         dragStartIndex = null;
         dragEnterIndex = null;
         //드래그 앤 드랍을 마치면 변경 사항을 서버에 적용 Axios를 보냅니다.
-        preAxios.put('카테고리 변경사항 URL', dragDB)
+        console.log(dbNew);
+
+        preAxios.put('/logs/input', dbNew)
         .then((res) => {
             if(res.data.success) {
                 //카테고리 리스트를 다시 불러옵니다. 
-                preAxios.get('카테고리 불러오는 URL')
+                preAxios.post('logs/output')
                 .then((res) => {
                     setDragDB(res.data);
                 })
@@ -121,7 +135,6 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
         }
     }
     window.addEventListener('click', () => {
-        console.log('윈도우 클릭');
         setModalDisplay('none');
     })
     function categryContextMenu (e) {
@@ -141,14 +154,37 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
     }
     function submitNewCategory (e) {
         if (e.key === "Enter") {
+            const newDB = dragDB;
+            const length = newDB.length + 1;
             const newCategory = {
+                rank: length,
                 title: newCategoryText,
             }
-            const newDB = dragDB;
-            dragDB.push(newCategory);
+            newDB.push(newCategory);
             setNewCategoryToggle(false);
             setNewCategoryText('');
-            setDragDB(dragDB);
+            setDragDB([...newDB]);
+
+            console.log('enter');
+            preAxios.put('logs/input', [{
+                rank: length,
+                title: newCategoryText,
+            }])
+            .then((res) => {
+                console.log(res.data);
+                preAxios.post('/logs/output', {
+                    category: 'title',
+                })
+                .then ((res) => {
+                    setDragDB([...res.data]);
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+            })
+            .catch((err) => {
+                console.error(err);
+            });
         }
     }
      return (

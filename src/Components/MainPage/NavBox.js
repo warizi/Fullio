@@ -3,17 +3,37 @@ import COLOR from "./COLOR";
 import BoxShadow from "./StyleComponents";
 import WavePrimary from "../../image/wavePrimary.png";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
 
 function NavBox ({ selectColor }) {
     const moveRecordPage = useNavigate();
+    const [first, setFirst] = useState('');
+    const [second, setSecond] = useState('');
+    const [third, setThird] = useState('');
+    useEffect(() => {
+        if (selectColor === '공지') {
+            setThird('background-position-y: -10rem;background-size: 400% 400%;color: white;');
+        } else if (selectColor === '기록') {
+            setFirst('background-position-y: -10rem;background-size: 400% 400%;color: white;');   
+        } else if (selectColor === '포트폴리오'){
+            setSecond('background-position-y: -10rem;background-size: 400% 400%;color: white;');
+        }
+    }, [])
     function moveRecordPageClick () {
         moveRecordPage('/main/Record');
     }
+    function movePageClick () {
+        moveRecordPage('/main/announcement');
+    }
+    function movePageMain () {
+        moveRecordPage('/main');
+    }
     return (
         <NavContainer className="nav-container">
-            <Button selectColor={selectColor} onClick={moveRecordPageClick}>기록</Button>
-            <Button>포트폴리오</Button>
-            <Button>공지</Button>
+            <Button selectColor={first} onClick={moveRecordPageClick}>기록</Button>
+            <Button selectColor={second} onClick={movePageMain}>포트폴리오</Button>
+            <Button selectColor={third} onClick={movePageClick}>공지</Button>
         </NavContainer>
     )
 }
@@ -43,7 +63,9 @@ const Button = styled.button`
     background-size: 100% 100%;
     transition: 0.3s;
     background-position-y: 5rem;
+
     ${props => props.selectColor};
+
     &:hover {
         color: ${COLOR.White};
         background-position-y: -10rem;

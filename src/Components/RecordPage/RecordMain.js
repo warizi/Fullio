@@ -39,7 +39,7 @@ function RecordMain () {
             <div className='main-container'>
                 <div className='left-container'>
                     <img onClick={moveMain} className='main-logo-img' src={logo} alt="Fullio Logo" />
-                    <NavBox remove={removeAlet} selectColor={'background-position-y: -10rem;background-size: 400% 400%;color: white;'} />
+                    <NavBox remove={removeAlet} selectColor={'기록'} />
                     <WaveButton onClick={clickLogout}>로그아웃</WaveButton>
                 </div>
                 <NavContainer remove={removeAlet} setRemove={setRemoveAlet} title={'카테고리'} category={category} onChange={setCategory}/>

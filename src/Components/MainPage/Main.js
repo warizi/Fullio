@@ -137,7 +137,7 @@ function Main() {
             <div className='main-container'>
                 <div className='left-container'>
                     <img className='main-logo-img' src={logo} alt="Fullio Logo" />
-                    <NavBox />
+                    <NavBox selectColor={'포트폴리오'}/>
                     <WaveButton onClick={clickLogout}>로그아웃</WaveButton>
                 </div>
                 <div className='cneter-container'>

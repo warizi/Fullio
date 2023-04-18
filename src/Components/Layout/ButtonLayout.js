@@ -3,9 +3,9 @@ import WavePrimary from "../../image/wavePrimary.png";
 import styled from "styled-components";
 
 const waveButtonPrimary = WavePrimary;
-function ButtonLayout ({ title, onClick }) {
+function ButtonLayout ({ title, onClick, selectColor }) {
     return (
-        <Button onClick={onClick}>{title}</Button>
+        <Button selectColor={selectColor} onClick={onClick}>{title}</Button>
         //props => selectColor로 선택된 버튼을 설정할 수 있습니다.
     )
 }

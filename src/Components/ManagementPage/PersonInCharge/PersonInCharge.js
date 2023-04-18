@@ -65,7 +65,7 @@ function PersonInChargeMove () {
         //picker를 초기화 합니다.
         setPickDropPerson([]);
     };
-    return <MainLayout content={
+    return <MainLayout page={'담당 인재 설정'} content={
         <MainContainer>
             <div className="top_container">
                 <select>

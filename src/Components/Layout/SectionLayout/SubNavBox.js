@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import COLOR from "../../MainPage/COLOR";
 import BoxShadow from "../../MainPage/StyleComponents";
+import { Fragment } from "react";
 
-function MyButton ({active, title}) {
+function MyButton ({active, title }) {
     return <MyBtn active={active}>{title}</MyBtn>
 }
 const MyBtn = styled.div`
@@ -26,10 +27,10 @@ function SubNavBox ({title, btnArray}) {
             <Mytitle>{title}</Mytitle>
             {btnArray.map((item, index) => {
                 return (
-                    <>
-                    <MyButton key={index} active={true} title={item.title}/>
-                    <br key={item.id}/>
-                    </>
+                    <Fragment key={index}>
+                    <MyButton active={true} title={item.title}/>
+                    <br />
+                    </Fragment>
                 )
             })}
         </NavContainer>

@@ -93,8 +93,15 @@ function ManagementMain () {
             console.error(new Error("로그아웃 중 에러 발생"));
         });
     };
-    function foo() {
-        alert('성공');
+    function movePageClick(e) {
+        const title = e.target.innerHTML;
+        if (title === '성찰일지 관리') {
+            movePage('/management/record');
+        } else if (title === '공지 관리') {
+            movePage('/management/announcement');
+        } else {
+            alert('업데이트 예정');
+        }
     };
     function moveSetting () {
 
@@ -113,10 +120,10 @@ function ManagementMain () {
             <div className="left_container">
                 <Logimg  src={logoImg} alt="로고 이미지" />
                 <NavLayout content={<>
-                    <ButtonLayout title={'인재관리'} onClick={foo}/>
-                    <ButtonLayout title={'성찰일지 관리'} onClick={foo}/>
-                    <ButtonLayout title={'공지 관리'} onClick={foo}/>
-                    <ButtonLayout title={'챌린지'} onClick={foo}/>
+                    <ButtonLayout title={'인재관리'} onClick={(e) => movePageClick(e)}/>
+                    <ButtonLayout title={'성찰일지 관리'} onClick={(e) => movePageClick(e)}/>
+                    <ButtonLayout title={'공지 관리'} onClick={(e) => movePageClick(e)}/>
+                    <ButtonLayout title={'챌린지'} onClick={(e) => movePageClick(e)}/>
                     </>
                 } />
                 <PrimaryButton onClick={moveSetting}>설정</PrimaryButton>

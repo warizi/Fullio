@@ -8,7 +8,7 @@ function CheckLog ({ index, item }) {
         <Container index={index}>
                 {item.map((item, indexIn) => {
                     if (typeof(item) === 'string') {
-                        return <Name index={index}>{item}</Name>
+                        return <Name key={indexIn} index={index}>{item}</Name>
                     } else {
                         return (
                                 <Week key={indexIn}>

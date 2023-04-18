@@ -8,6 +8,10 @@ import RecordMain from './Components/RecordPage/RecordMain';
 import ManagementMain from './Components/ManagementPage/ManagementMain';
 import ManageMyPage from './Components/ManagementPage/ManageMyPage/ManageMyPage';
 import PersonInChargeMove from './Components/ManagementPage/PersonInCharge/PersonInCharge';
+import RecordManage from './Components/ManagementPage/recordManagePage/RecordManage';
+import AnnouncementMain from './Components/ManagementPage/AnnouncementPage/AnnouncementMain';
+import AnnouncementPage from './Components/AnnouncementPage/AnnouncementPage';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
@@ -19,6 +23,9 @@ root.render(
       <Route path='/management' element={<ManagementMain />} />
       <Route path='/management/mypage' element={<ManageMyPage />} />
       <Route path='/management/personincharge' element={<PersonInChargeMove />} />
+      <Route path='/management/record' element={<RecordManage />} />
+      <Route path='/management/announcement' element={<AnnouncementMain />} />
+      <Route path='/main/announcement' element={<AnnouncementPage />} />
     </Routes>
   </BrowserRouter>
 );
