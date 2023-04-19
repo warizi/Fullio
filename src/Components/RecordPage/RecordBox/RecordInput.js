@@ -135,7 +135,6 @@ function RecordInput ({week, setWeek, dateStart, setDateStart, dateEnd, setDateE
                 </RecordContent>
                 <CommentCancel onClick={() => onClick(id)}>작성 취소</CommentCancel>
                 <CommentSubmit onClick={submit}>완료</CommentSubmit>
-
             </ContentContainer>
         </MainContainer>
     )

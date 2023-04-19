@@ -41,17 +41,34 @@ function MainContainer ({ category, setRemove, remove }) {
 
     //불러오기
     useEffect(() => {
-        preAxios.post('/records/output', {
-            category: category,
-        })
-        .then((res) => {
-          const array = res.data;
-          const reverse = array.reverse();
-            setRecordArray(reverse);
-        })
-        .catch((err) => {
-            console.error(err);
-        })
+        console.log(category);
+        if (category === '심화교육' || category === '공통교육') {
+            preAxios.post('/records/output', {
+                category: category,
+            })
+            .then((res) => {
+              const array = res.data;
+              const reverse = array.reverse();
+                setRecordArray(reverse);
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+        } else {
+            preAxios.post('/logs/output', {
+                category: 'detail',
+                id: category,
+            })
+            .then((res) => {
+              const array = res.data;
+              const reverse = array.reverse();
+                setRecordArray(reverse);
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+        }
+        
     }, [category])
 
     //카테고리 변경시 입력폼이 있고, 이동 허락될 시 삭제
@@ -158,8 +175,8 @@ function MainContainer ({ category, setRemove, remove }) {
                 onClick={deleteNewRecord}/> : 
             <></>}
             {/* 기존 기록 불러오기 */}
-            {recordArray.map((item) => {
-                return <RecordMainBox setRecordArray={setRecordArray} category={category} item={item} key={item.id} id={item.id}/>
+            {recordArray.map((item, index) => {
+                return <RecordMainBox setRecordArray={setRecordArray} category={category} item={item} key={index} id={item.id}/>
             })}
             </MainScroll>
         </MainBox>

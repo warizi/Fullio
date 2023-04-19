@@ -187,6 +187,16 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
             });
         }
     }
+    function activityCategory (e, categoryId) {
+        if(remove === 0){
+            onChange(categoryId);
+        }else {
+            if(window.confirm("수정하던 기록이 있습니다. 이동하시겠습니까?")){
+                onChange(categoryId);
+                setRemove(1);
+            }
+        }
+    }
      return (
         <NavBoxContainer>
             <Title>{title}</Title>
@@ -222,6 +232,7 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
                                 onDragEnter={(e) => dragEnter(e, index)}
                                 onDragEnd={(e) => dragEnd(e, index)}
                                 onDragLeave={(e) => dragLeave(e, index)}
+                                onClick={(e) => activityCategory(e, item.id)}
                             >
                                 <TagImg btn={true} src={rightImgSrc} />
                                 <Div>{item.title}</Div>

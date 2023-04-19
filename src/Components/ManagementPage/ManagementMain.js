@@ -78,7 +78,11 @@ const checkDB = [
     ['진승현', null, true, false, true, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null],
 
 ];
-
+//객체로 왔을 때 위의 더미데이터로 만들어주는 함수.
+function transDB () {
+    
+}
+//함수 끝.
 function ManagementMain () {
     const movePage = useNavigate();
     function clickLogout () {
