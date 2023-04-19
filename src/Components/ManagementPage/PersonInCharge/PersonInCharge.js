@@ -3,44 +3,33 @@ import MainLayout from "../ManagementLayout/MainLayout";
 import BoxShadow from "../../MainPage/StyleComponents";
 import "./personInCharge.css";
 import DndBox from "./DnDBox/DndBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import adminAxios from "../../adminAxios";
 
-const tpersonDB = ['강성훈', '강인희', '강지용', '강지환', '고기훈', '고영준', '고재영', '김건우', '김광범', '김나연', '김남희', '김대한', '김동휘', '김로은', '김미정', '김민서', '김병준', '김보영', '김상훈', '김성서', '김소연', '김소은', '김정예', '김정원', '김지현', '김진성', '김진호', '김푸름', '김하정', '남병준', '문군호', '문승현', '문창현', '박경진', '박성영', '박세환', '변경환', '변재성', '송민혁', '송인정', '신지윤', '안수지', '양지선', '오주연', '원세종', '유승범', '이경헌', '이남호', '이수진', '이승현', '이재은', '이지현', '이채연', '이현아', '임소은', '임창현', '장재영', '장호', '정광호', '정루시아', '정유진', '정재석', '정지원', '조민지', '조송욱', '조수안', '조아라', '조윤수', '지예슬', '진승현', '최소영', '한주희', '황란경'];
+
 const selectDB = [];
 //새로운 테스트
-const personDB = [
-    {
-        memberNumber: 22207071,
-        name: '강지용',
-    },
-    {
-        memberNumber: 22207072,
-        name: '고기훈',
-    },
-    {
-        memberNumber: 22207073,
-        name: '고재영',
-    },
-    {
-        memberNumber: 22207074,
-        name: '오주연',
-    },
-    {
-        memberNumber: 22207075,
-        name: '진승현',
-    },
-];
+
 const tselectDB = [];
 //테스트 끝
 function PersonInChargeMove () {
     //기수 
     const [generation, setGeneration] = useState();
     //기존 서버 데이터
-    const [person, setPerson] = useState(personDB);
+    const [person, setPerson] = useState([]);
     const [dropPerson, setDropPerson] = useState(selectDB);
     //picker 데이터
     const [pickPerson, setPickPerson] = useState([]);
     const [pickDropPerson, setPickDropPerson] = useState([]);
+    useEffect(() => {
+        adminAxios.post('manage/member/management/output')
+        .then((res) => {
+            setDropPerson([...res.data]);
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+    }, [])
     function pickSubmit () {
         const personArray = person;
         const dropPersonArray = dropPerson;
@@ -86,12 +75,26 @@ function PersonInChargeMove () {
         for(let i = 0; i < person.length; i ++) {
             axiosPerson.push(person[i].memberNumber);
         }
-        console.log(axiosPerson);
         const axiosDropPerson = [];
         for(let i = 0; i < dropPerson.length; i ++) {
             axiosDropPerson.push(dropPerson[i].memberNumber);
         }
-        console.log(axiosDropPerson);
+        const axiosPick = [];
+        for (let i = 0; i < pickArray.length; i++) {
+            axiosPick.push(pickArray[i].memberNumber);
+        }
+        //
+        const putArray = [];
+        for (let i = 0; i < dropPerson.length; i++) {
+            putArray.push(dropPerson[i].memberNumber);
+        }
+        adminAxios.put('manage/input', putArray)
+        .then((res) => {
+            
+        })
+        .catch((err) => {
+            console.error(err);
+        })
     };
     function dropSubmit () {
         //db의 종류를 모두 역순으로 적용했습니다.
@@ -139,18 +142,40 @@ function PersonInChargeMove () {
         for(let i = 0; i < person.length; i ++) {
             axiosPerson.push(person[i].memberNumber);
         }
-        console.log(axiosPerson);
         const axiosDropPerson = [];
         for(let i = 0; i < dropPerson.length; i ++) {
             axiosDropPerson.push(dropPerson[i].memberNumber);
         }
-        console.log(axiosDropPerson);
+        const putArray = [];
+        for (let i = 0; i < dropPerson.length; i++) {
+            putArray.push(dropPerson[i].memberNumber);
+        }
+        adminAxios.put('manage/input', putArray)
+        .then((res) => {
+            
+        })
+        .catch((err) => {
+            console.error(err);
+        })
     };
     function generationChange(e) {
         const value = e.target.value;
         setGeneration(value);
         //value값으로 axios 넣을 것
-        console.log(value);
+        adminAxios.post('manage/member/output', {
+            generation: value,
+        })
+        .then((res) => {
+            let personDB = res.data;
+            let dropPersonDB = dropPerson;
+            for (let i = 0; i < dropPersonDB.length; i++) {
+                personDB = [...personDB.filter(a => a.name !== dropPersonDB[i].name)];
+            }
+            setPerson(personDB);
+        })
+        .catch((err) => {
+            console.error(err);
+        })
     }
     return <MainLayout page={'담당 인재 설정'} content={
         <MainContainer>

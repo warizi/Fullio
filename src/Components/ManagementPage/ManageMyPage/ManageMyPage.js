@@ -16,10 +16,15 @@ import ProfileImage from "../../../image/Profile.png";
 import PhotoSrc from "../../../image/photo.png";
 import PwChange from "../../MyPage/IdPwBox/PwChange";
 import logoimg from "../../../image/LogoImage.png";
+import { useEffect } from "react";
+import adminAxios from "../../adminAxios";
 
 function ManageMyPage () {
     const [loginToggle, setLoginToggel] = useState(true);
-    const [profileImgURL, setProfileImgURL] = useState(ProfileImage);
+    const [profileImgURL, setProfileImgURL] = useState(ProfileImage);//프로필 사진 
+    const [idInput, setIdInput] = useState('아이디');
+    const [userName, setUserName] = useState('이름');
+    const [part, setPart] = useState('소속부서');
     const navBtn = [{title: '계정관리', id: 'mmp1',}]
     const movePage = useNavigate();
     function clickLogout () {
@@ -46,6 +51,7 @@ function ManageMyPage () {
             alert('업데이트 예정');
         }
     }
+    //관리자 마이페이지 프로필사진 업로드
     function fileAxios (e) {
         const formData = new FormData();
         formData.append("file", e.target.files[0]);
@@ -75,6 +81,18 @@ function ManageMyPage () {
     function moveMain () {
         movePage('/management');
     }
+
+    useEffect(() => {
+        adminAxios.get('최초로딩 url')
+        .then((res) => {
+            setIdInput(res.id);
+            setUserName(res.name);
+            setPart(res.part);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, [])
     return (
         <>
         <main className="main-container">
@@ -116,7 +134,7 @@ function ManageMyPage () {
                         <InputCon>
                         <InfoTitle>아이디</InfoTitle>
                             <InputConBox>
-                                <InInput name="input-text" readOnly type="text" value={'아이디'}/>
+                                <InInput name="input-text" readOnly type="text" value={idInput}/>
                             </InputConBox>
                         </InputCon>
                     </InputBoxCon>
@@ -124,7 +142,7 @@ function ManageMyPage () {
                         <InputCon>
                         <InfoTitle>비밀번호</InfoTitle>
                             <InputConBox>
-                                <InInput name="input-text" readOnly type="password" value={'0000'}/>
+                                <InInput name="input-text" readOnly type="password" value={'00000'}/>
                             </InputConBox>
                         </InputCon>
                     </InputBoxCon>
@@ -132,7 +150,7 @@ function ManageMyPage () {
                         <InputCon>
                         <InfoTitle>이름</InfoTitle>
                             <InputConBox>
-                                <InInput name="input-text" readOnly type="text" value={'김윤석'}/>
+                                <InInput name="input-text" readOnly type="text" value={userName}/>
                             </InputConBox>
                         </InputCon>
                     </InputBoxCon>
@@ -140,7 +158,7 @@ function ManageMyPage () {
                         <InputCon>
                         <InfoTitle>소속부서</InfoTitle>
                             <InputConBox>
-                                <InInput name="input-text" readOnly type="text" value={'취/창업 관리팀'}/>
+                                <InInput name="input-text" readOnly type="text" value={part}/>
                             </InputConBox>
                         </InputCon>
                     </InputBoxCon>

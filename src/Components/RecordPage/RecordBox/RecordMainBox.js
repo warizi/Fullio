@@ -12,8 +12,7 @@ import preAxios from "../../axios";
 import nocheck from "../../../image/nocheck.png";
 import adminAxios from "../../adminAxios";
 
-function RecordMainBox ({ item, id, category, setRecordArray, admin }) {
-   
+function RecordMainBox ({ memberNumber, item, id, category, setRecordArray, admin }) {
     const [commentToggle, setCommentToggle] = useState('none');
     const [colorToggle, setColorToggle] = useState('Black');
     const [imgToggle, setImgToggle] = useState(DownBtn);
@@ -43,6 +42,7 @@ function RecordMainBox ({ item, id, category, setRecordArray, admin }) {
         setDateEnd(item.dateEnd);
         setWeek(item.week);
         setChecked(item.checkBox);
+        console.log(item.checkBox);
     },[item])
 
     //숫자 적용시 2개 단위로 나눠 .을 넣습니다.
@@ -118,16 +118,30 @@ function RecordMainBox ({ item, id, category, setRecordArray, admin }) {
             setColorToggle('#3b85a3');
             setImgToggle(PrimaryUpBtn);
             //해당 게시물 댓글 axios 요청을 보냅니다.
-            preAxios.post('records/commentoutput', {
-                category: category,
-                id: id,
-            })
-            .then((res) => {
-                setCommentArray(res.data);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+            if (!admin) {
+                preAxios.post('records/commentoutput', {
+                    category: category,
+                    id: id,
+                })
+                .then((res) => {
+                    setCommentArray(res.data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+            } else {
+                adminAxios.post('manage/member/management/records/commentoutput', {
+                    category: category,
+                    id: id,
+                })
+                .then((res) => {
+                    setCommentArray(res.data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+            }
+            
         } else {
             setCommentToggle('none');
             setColorToggle('black');
@@ -206,27 +220,52 @@ function RecordMainBox ({ item, id, category, setRecordArray, admin }) {
     }
     function commentSubmitClick () {
         //댓글 정보를 axios로 보냅니다.
-        preAxios.put('/records/commentinput', {
-            category: category,
-            content: comment,
-            id: id,
-        })
-        .then((res) => {
-            preAxios.post('/records/commentoutput', {
+        if (!admin) {
+            preAxios.put('/records/commentinput', {
                 category: category,
+                content: comment,
                 id: id,
             })
             .then((res) => {
-                setCommentArray(res.data);
+                preAxios.post('/records/commentoutput', {
+                    category: category,
+                    id: id,
+                })
+                .then((res) => {
+                    setCommentArray(res.data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+                setComment('');
             })
             .catch((err) => {
-                console.error(err);
+                console.error(err)
             })
-            setComment('');
-        })
-        .catch((err) => {
-            console.error(err)
-        })
+        } else {
+            adminAxios.put('manage/member/management/records/commentinput', {
+                category: category,
+                content: comment,
+                id: id,
+            })
+            .then((res) => {
+                adminAxios.post('manage/member/management/records/commentoutput', {
+                    category: category,
+                    id: id,
+                })
+                .then((res) => {
+                    setCommentArray(res.data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+                setComment('');
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+        }
+        
     }
     //게시물 삭제 함수
     function deleteReflection () {
@@ -256,9 +295,12 @@ function RecordMainBox ({ item, id, category, setRecordArray, admin }) {
       })
       setCrudToggle('none');
     };
-    function checkClick(id){
+    function checkClick(){
+        console.log(memberNumber);
+        console.log(id);
         if (admin) {
-            adminAxios.post('manage/', {
+            adminAxios.put('manage/checkinput', {
+                memberNumber: memberNumber,
                 id: id,
                 checkBox: true,
             })
@@ -277,7 +319,7 @@ function RecordMainBox ({ item, id, category, setRecordArray, admin }) {
                 {modi ? <Date>{dateStart}</Date> : <DateModi value={dateStart} onChange={dateStartChange}/>}
                 <Date>-</Date>
                 {modi ? <Date>{dateEnd}</Date> : <DateModi value={dateEnd} onChange={dateEndChange}/>}
-                {checked ? <Check admin={admin} onClick={() => checkClick(id)} src={nocheck} /> : <Check admin={admin} onClick={checkClick} src={checkImg} />}
+                {!checked ? <Check admin={admin} onClick={checkClick} src={nocheck} /> : <Check admin={admin} onClick={checkClick} src={checkImg} />}
                 {/* checkBox */}
                 <Line />
             </SideContainer>

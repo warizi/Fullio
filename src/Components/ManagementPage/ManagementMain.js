@@ -15,6 +15,7 @@ import profileImg from "../../image/Profile.png";
 import PrimaryBasicButton from "../Layout/PrimaryBasicButton";
 import CheckLog from "./recordManage/CheckLog";
 import logoImg from "../../image/LogoImage.png";
+import adminLoginAxios from "../adminLoginAxios";
 
 const noticeDB = [
     {
@@ -127,7 +128,7 @@ function ManagementMain () {
     function clickLogout () {
         alert('로그아웃.');
         //url수정 필요
-        loginAxios.post("/logout")
+        adminLoginAxios.post("/logout")
         // .then((res) => res.json())
         .then((res) => {
             movePage('/');

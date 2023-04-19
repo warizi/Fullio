@@ -25,7 +25,6 @@ function DndBox ({type, dbArray, picker, setPicker, onClick }) {
             deleteItem.splice(pick, 1);
             setPicker([...deleteItem]);
         }
-        console.log(picker);
     }
     return <MainBox>
         <SubmitBtn onClick={onClick}>{type}</SubmitBtn>

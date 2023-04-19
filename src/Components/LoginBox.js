@@ -7,6 +7,7 @@ import WaveA from './WaveA';
 import './WaveA.css';
 import { useNavigate } from 'react-router-dom';
 import loginAxios from './loginAxios';
+import adminLoginAxios from './adminLoginAxios';
 
 function LoginBox() {
     const [cancelImgMoveId, setCancelImgMoveId] = useState(0);
@@ -85,17 +86,17 @@ function LoginBox() {
                 });
             } else if (textId.length === 6) {
                 //admin 
-                loginAxios.post("/login", [{
+                adminLoginAxios.post("/login", {
                     user:textId,
                     pw:textPw,
-                },
-                ])
+                }
+                )
                 .then((res) => {
                     if(res.status === 200){
                         setClassNameWave('login-wave');
                         setAlertIdPw('');
                         setTimeout(() => {
-                            movePage('/main');
+                            movePage('/management');
                         }, 1000);
                     }else if(!res.status ===204){
                         setAlertIdPw('아이디/비밀번호를 확인해주세요!');
