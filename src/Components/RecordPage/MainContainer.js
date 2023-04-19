@@ -21,6 +21,7 @@ function MainContainer ({ category, setRemove, remove }) {
     const [dateStart, setDateStart] = useState('');
     const [dateEnd, setDateEnd] = useState('');
     const [week, setWeek] = useState('');
+    const admin = false;
 
     function plusClick () {
         //하나씩만 기록 가능할 때
@@ -47,6 +48,7 @@ function MainContainer ({ category, setRemove, remove }) {
                 category: category,
             })
             .then((res) => {
+                console.log(res.data);
               const array = res.data;
               const reverse = array.reverse();
                 setRecordArray(reverse);
@@ -176,7 +178,7 @@ function MainContainer ({ category, setRemove, remove }) {
             <></>}
             {/* 기존 기록 불러오기 */}
             {recordArray.map((item, index) => {
-                return <RecordMainBox setRecordArray={setRecordArray} category={category} item={item} key={index} id={item.id}/>
+                return <RecordMainBox admin={admin} setRecordArray={setRecordArray} category={category} item={item} key={index} id={item.id}/>
             })}
             </MainScroll>
         </MainBox>

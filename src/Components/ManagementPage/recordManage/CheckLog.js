@@ -14,7 +14,7 @@ function CheckLog ({ index, item }) {
                                 <Week key={indexIn}>
                                     {item ? 
                                     <CheckImg src={greenCheck} alt="체크됨"/> : 
-                                    (item === null ? 
+                                    (item !== false ? 
                                     <CheckImg src={redCheck} alt="기록 없음"/> : 
                                     <CheckImg src={grayCheck} alt="체크안됨" />
                                     )}

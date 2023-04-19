@@ -9,8 +9,10 @@ import { useState } from "react";
 import BoxShadow from "../../MainPage/StyleComponents";
 import { useEffect } from "react";
 import preAxios from "../../axios";
+import nocheck from "../../../image/nocheck.png";
+import adminAxios from "../../adminAxios";
 
-function RecordMainBox ({ item, id, category, setRecordArray }) {
+function RecordMainBox ({ item, id, category, setRecordArray, admin }) {
    
     const [commentToggle, setCommentToggle] = useState('none');
     const [colorToggle, setColorToggle] = useState('Black');
@@ -28,6 +30,7 @@ function RecordMainBox ({ item, id, category, setRecordArray }) {
     const [week, setWeek] = useState(item.week);
     const [commentArray, setCommentArray] = useState([]);
     const [comment, setComment] = useState('');
+    const [checked, setChecked] = useState(false);
     
     useEffect(() => {
         setActivityName(item.activityName);
@@ -39,6 +42,7 @@ function RecordMainBox ({ item, id, category, setRecordArray }) {
         setDateStart(item.dateStart);
         setDateEnd(item.dateEnd);
         setWeek(item.week);
+        setChecked(item.checkBox);
     },[item])
 
     //숫자 적용시 2개 단위로 나눠 .을 넣습니다.
@@ -252,6 +256,20 @@ function RecordMainBox ({ item, id, category, setRecordArray }) {
       })
       setCrudToggle('none');
     };
+    function checkClick(id){
+        if (admin) {
+            adminAxios.post('manage/', {
+                id: id,
+                checkBox: true,
+            })
+            .then((res) => {
+                //다시 불러오기 구현 합니다.
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+        }
+    }
     return (
         <MainContainer>
             <SideContainer>
@@ -259,7 +277,8 @@ function RecordMainBox ({ item, id, category, setRecordArray }) {
                 {modi ? <Date>{dateStart}</Date> : <DateModi value={dateStart} onChange={dateStartChange}/>}
                 <Date>-</Date>
                 {modi ? <Date>{dateEnd}</Date> : <DateModi value={dateEnd} onChange={dateEndChange}/>}
-                <Check src={checkImg} />
+                {checked ? <Check admin={admin} onClick={() => checkClick(id)} src={nocheck} /> : <Check admin={admin} onClick={checkClick} src={checkImg} />}
+                {/* checkBox */}
                 <Line />
             </SideContainer>
             <ContentContainer>
@@ -510,6 +529,7 @@ const Check = styled.img`
     width: 2.8rem;
     height: 2.8rem;
     margin: 1rem auto 0;
+    ${props => props.admin ? 'cursor: pointer;' : ''}
 `;
 const Date = styled.div`
     width: 5rem;

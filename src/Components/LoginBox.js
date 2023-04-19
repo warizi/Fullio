@@ -59,30 +59,57 @@ function LoginBox() {
     }
     function loginBtn() {
         if(textId.length > 0 && textPw.length > 0) {
-            loginAxios.post("/login", [{
+            if(textId.length > 6 ){
+                loginAxios.post("/login", [{
                     user:textId,
                     pw:textPw,
                 },
-            ])
-            .then((res) => {
-                if(res.status === 200){
-                    setClassNameWave('login-wave');
-                    setAlertIdPw('');
-                    setTimeout(() => {
-                        movePage('/main');
-                    }, 1000);
-
-                }else if(!res.status ===204){
-                setAlertIdPw('아이디/비밀번호를 확인해주세요!')
-                setFailLoginPw('fail-login')
-                setFailLoginId('fail-login')
-                setCancelImgMoveId(2)
-                setCancelImgMovePw(2)
-                }
-            })
-            .catch((error) => {
-                console.error(new Error("로그인 중 에러 발생"));
-            });
+                ])
+                .then((res) => {
+                    if(res.status === 200){
+                        setClassNameWave('login-wave');
+                        setAlertIdPw('');
+                        setTimeout(() => {
+                            movePage('/main');
+                        }, 1000);
+                    }else if(!res.status ===204){
+                        setAlertIdPw('아이디/비밀번호를 확인해주세요!');
+                        setFailLoginPw('fail-login');
+                        setFailLoginId('fail-login');
+                        setCancelImgMoveId(2);
+                        setCancelImgMovePw(2);
+                    }
+                })
+                .catch((error) => {
+                    console.error(new Error("로그인 중 에러 발생"));
+                });
+            } else if (textId.length === 6) {
+                //admin 
+                loginAxios.post("/login", [{
+                    user:textId,
+                    pw:textPw,
+                },
+                ])
+                .then((res) => {
+                    if(res.status === 200){
+                        setClassNameWave('login-wave');
+                        setAlertIdPw('');
+                        setTimeout(() => {
+                            movePage('/main');
+                        }, 1000);
+                    }else if(!res.status ===204){
+                        setAlertIdPw('아이디/비밀번호를 확인해주세요!');
+                        setFailLoginPw('fail-login');
+                        setFailLoginId('fail-login');
+                        setCancelImgMoveId(2);
+                        setCancelImgMovePw(2);
+                    }
+                })
+                .catch((error) => {
+                    console.error(new Error("로그인 중 에러 발생"));
+                });
+            }
+            
         } else if (textId.length === 0 && textPw.length === 0 ) {
             setFailLoginPw('fail-login')
             setFailLoginId('fail-login')

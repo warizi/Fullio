@@ -61,7 +61,7 @@ const noticeDB = [
 ]
 
 const checkDB = [
-    ['강지용', true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false],
+    ['강지용', true, false, undefined, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false, true, false, null, false],
     ['고기훈', false, true, null, true, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null],
     ['고재영', true, null, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null],
     ['오주연', false, true, null, false, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null],
@@ -76,14 +76,53 @@ const checkDB = [
     ['고재영', true, null, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null],
     ['오주연', false, true, null, false, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null],
     ['진승현', null, true, false, true, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null],
-
 ];
-//객체로 왔을 때 위의 더미데이터로 만들어주는 함수.
-function transDB () {
-    
-}
-//함수 끝.
+
+const checkAxiosDB = [
+    [
+        {
+            profilPath: null,
+            name: "MERGE",
+            nickName: null,
+            position: '보스',
+        }
+    ],
+    [
+        {
+            member: '강지용',
+            week1: false,
+            week2: false,
+            week3: true,
+        },
+        {
+            member: '고기훈',
+            week1: false,
+            week2: false,
+            week3: true,
+        },
+        {
+            member: '고재영',
+            week1: false,
+            week2: false,
+            week3: true,
+        },
+        {
+            member: '오주연',
+            week1: false,
+            week2: false,
+            week3: true,
+        },
+        {
+            member: '진승현',
+            week1: false,
+            week2: false,
+            week3: true,
+        }
+    ]
+]
+
 function ManagementMain () {
+
     const movePage = useNavigate();
     function clickLogout () {
         alert('로그아웃.');

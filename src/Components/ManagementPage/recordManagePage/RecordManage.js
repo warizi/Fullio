@@ -68,6 +68,7 @@ function SelectListBox ({onClick, title, reset, setReset}) {
 }
 function RecordManage() {
     const [resetColor, setResetColor] = useState(0);
+    const admin = true;
     return (
         <MainLayout page={'성찰일지'} content={
             <MainRecordContainer>
@@ -92,7 +93,7 @@ function RecordManage() {
                 </div>
                 <div className="record_content_container">
                     {recordDB.map((item, index) => {
-                        return <RecordMainBox key={index} item={item} />
+                        return <RecordMainBox admin={admin} key={index} item={item} />
                     })}
                 </div>
             </MainRecordContainer>
