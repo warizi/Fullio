@@ -5,13 +5,13 @@ import adminAxios from "../../adminAxios";
 import preAxios from "../../axios";
 import ModifyAnnouncement from "../../ManagementPage/AnnouncementPage/modifyAnnouncement";
 
-function BarLayout ({id, admin, date, number, title, name, setNoticeArray}) {
+function BarLayout ({createdAt, id, admin, date, number, title, name, setNoticeArray}) {
     const [contentToggle, setContentToggle] = useState('0');
     const [content, setContent] = useState('');
     const [writerCheck, setWriterCheck] = useState(false);
     const [modiToggle, setModiToggle] = useState(false);
     function contentClick () {
-        console.log(writerCheck);
+        console.log(createdAt);
         if (contentToggle === '0') {
             setContentToggle('15rem');
         } else {
@@ -48,9 +48,11 @@ function BarLayout ({id, admin, date, number, title, name, setNoticeArray}) {
             })
             .then((res) => {
                 //삭제하고 다시 불러옵니다.(admin만 가능)
-                adminAxios.get('notice/output')
+                adminAxios.get('notice/default')
                 .then((res) => {
-                    setNoticeArray([...res.data]);
+                    const array = res.data;
+                    setNoticeArray([...array.reverse()]);
+                    setContentToggle('0');
                 })
                 .catch((err) => {
                     console.error(err);
@@ -63,6 +65,7 @@ function BarLayout ({id, admin, date, number, title, name, setNoticeArray}) {
     }
     function modifyClick () {
         setModiToggle(true);
+        setContentToggle('0');
     }
     return (<>
         {modiToggle ? <ModifyAnnouncement setNoticeArray={setNoticeArray} id={id} setModiToggle={setModiToggle} content={content} title={title}/>: <></>}

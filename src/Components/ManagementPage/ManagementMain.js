@@ -88,6 +88,7 @@ function ManagementMain () {
     const [position, setPosition] = useState('직책');
     const [nickName, setNickName] = useState('닉네임');
     const [imgFile, setImgFile] = useState(logoImg);
+    const [category, setCategory] = useState('공통교육');
     const movePage = useNavigate();
     function clickLogout () {
         alert('로그아웃.');
@@ -102,13 +103,15 @@ function ManagementMain () {
         });
     };
     useEffect(() => {
-        adminAxios.post('url',{title: '몰루'})
+        adminAxios.post('main/output',{
+            category: '공통교육',
+        })
         .then((res) => {
             //대충 감으로 넣었음. 수정 필요
-            setImgFile(res.data[0].profil_path);
-            setUserName(res.data[0].userName);
-            setNickName(res.data[0].nickName);
-            setPosition(res.data[0].position);
+            setImgFile(res.data[0][0].profilPath);
+            setUserName(res.data[0][0].name);
+            setNickName(res.data[0][0].nickName);
+            setPosition(res.data[0][0].position);
         
             setRecordArray(res.data[1]);
         })
@@ -136,7 +139,26 @@ function ManagementMain () {
             renderArray.push(<TitleItem key={i}>{i}주차</TitleItem>)
         }
     }
-    
+    function AClick(e) {
+        const category = e.target.innerHTML;    
+        setCategory(category);
+        adminAxios.post('main/output',{
+            category: '공통교육',
+        })
+        .then((res) => {
+            setRecordArray(res.data[1]);
+        })
+    }
+    function BClick(e) {
+        const category = e.target.innerHTML;
+        setCategory(category);
+        adminAxios.post('main/output',{
+            category: '심화교육',
+        })
+        .then((res) => {
+            setRecordArray(res.data[1]);
+        })
+    }
     
     return (
         <div className="main_container">
@@ -172,6 +194,8 @@ function ManagementMain () {
                 </section>
                 <CalendarBox />
                 <section className="record_management">
+                            <CategoryBtn onClick={(e) => AClick(e)} style={{top: -10, left: -5}}>공통교육</CategoryBtn>
+                            <CategoryBtn onClick={(e) => BClick(e)} style={{top: -10, left: 50}}>심화교육</CategoryBtn>
                     <div className="record_scroll">
                         {/* <div className="border"></div> */}
                         <div className="week_container">
@@ -190,6 +214,14 @@ function ManagementMain () {
         </div>
     )
 };
+const CategoryBtn = styled.button`
+    padding: 0;
+    z-index: 5000;
+    font-size: 1.2rem;
+    width: 6rem;
+    height: 4rem;
+    position: absolute;
+`;
 const Logimg = styled.img`
     position: absolute;
     width: 3.7rem;

@@ -8,6 +8,7 @@ import './WaveA.css';
 import { useNavigate } from 'react-router-dom';
 import loginAxios from './loginAxios';
 import adminLoginAxios from './adminLoginAxios';
+import { useEffect } from 'react';
 
 function LoginBox() {
     const [cancelImgMoveId, setCancelImgMoveId] = useState(0);
@@ -20,7 +21,30 @@ function LoginBox() {
     const [classNameWave, setClassNameWave] = useState('');
     const [pageLoad, setPageLoad] = useState('');
     const movePage = useNavigate();
+    useEffect(() => {
+        console.log(`%c
+        오늘의 나를 담아 내일로, 
 
+        #######  ##   ##  ####     ####       ##      #####  
+        ##   #  ##   ##   ##       ##       ####    ##   ## 
+        ## #    ##   ##   ##       ##       ####    ##   ## 
+        ####    ##   ##   ##       ##        ##     ##   ## 
+        ## #    ##   ##   ##   #   ##   #    ##     ##   ## 
+        ##      ##   ##   ##  ##   ##  ##           ##   ## 
+       ####      #####   #######  #######    ##      #####  
+
+
+        ##   ##  #######  ######     ####   #######           ##  ##    #####   ##   ##    ####  
+        ### ###   ##   #   ##  ##   ##  ##   ##   #           ##  ##   ##   ##  ###  ##   ##  ## 
+        #######   ## #     ##  ##  ##        ## #             ##  ##   ##   ##  #### ##  ##      
+        #######   ####     #####   ##        ####              ####    ##   ##  ## ####  ##      
+        ## # ##   ## #     ## ##   ##  ###   ## #               ##     ##   ##  ##  ###  ##  ### 
+        ##   ##   ##   #   ##  ##   ##  ##   ##   #             ##     ##   ##  ##   ##   ##  ## 
+        ##   ##  #######  #### ##    #####  #######            ####     #####   ##   ##    ##### 
+
+
+ `,"color: rgb(93,174,206)");
+    }, [])
     setTimeout(() => {
         setPageLoad('page-load');
     }, 100)

@@ -44,7 +44,6 @@ function RecordMainBox ({ memberNumber, item, id, category, setRecordArray, admi
         dsArray.splice(5, 0, '.');
         deArray.splice(2, 0, '.');
         deArray.splice(5, 0, '.');
-        console.log(dsArray);
 
         setDateStart(dsArray.join(''));
         setDateEnd(deArray.join(''));
@@ -304,16 +303,16 @@ function RecordMainBox ({ memberNumber, item, id, category, setRecordArray, admi
       setCrudToggle('none');
     };
     function checkClick(){
-        console.log(memberNumber);
-        console.log(id);
         if (admin) {
             adminAxios.put('manage/checkinput', {
+                category: category,
                 memberNumber: memberNumber,
                 id: id,
                 checkBox: true,
             })
             .then((res) => {
                 //다시 불러오기 구현 합니다.
+                setChecked(!checked);
             })
             .catch((err) => {
                 console.error(err);

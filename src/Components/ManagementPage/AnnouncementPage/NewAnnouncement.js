@@ -24,16 +24,6 @@ function NewAnnouncement ({ reload, setReload, setNewToggle}) {
     }
     //새로 작성 Axios 
     function submitNew () {
-        //필요시 시간 추출
-        // let today = new Date();   
-        // let hours = today.getHours(); // 시
-        // let minutes = today.getMinutes();  // 분
-        // let seconds = today.getSeconds();  // 초
-        // let year = today.getFullYear(); // 년도
-        // let month = today.getMonth() + 1;  // 월
-        // let date = today.getDate();  // 날짜
-        // let day = today.getDay();  // 요일
-        // console.log(`${year}년 ${month}월 ${date}일 ${hours}시 ${minutes}분 ${seconds}초`);
         
         if(window.confirm('글을 게시하겠습니까?')){
             adminAxios.put('notice/detail/input', {
@@ -41,6 +31,7 @@ function NewAnnouncement ({ reload, setReload, setNewToggle}) {
                 detail: contentValue,
             })
             .then((res) => {
+                setNewToggle(false);
                 setReload(reload + 1);
                 alert('성공');
             })

@@ -207,17 +207,20 @@ function AnnouncementLayout ({reload, admin, setNewToggle, newDisplay}) {
     const [pageNum, setPageNum] = useState(1);
     useEffect(() => {
         if(admin === 'admin') {
-            adminAxios.get('notice/ouput')
+            adminAxios.get('notice/default')
             .then((res) => {
-                setNoticeArray([...res.data]);
+                const array = res.data;
+
+                setNoticeArray([...array.reverse()]);
             })
             .catch((err) => {
                 console.error(err);
             });
         } else if (admin === 'none') {
-            preAxios.get('notice/output')
+            preAxios.get('notice/default')
             .then((res) => {
-                setNoticeArray([...res.data]);
+                const array = res.data;
+                setNoticeArray([...array.reverse()]);
             })
             .catch((err) => {
                 console.error(err);
@@ -250,6 +253,7 @@ function AnnouncementLayout ({reload, admin, setNewToggle, newDisplay}) {
                 if(pageCalc <= index && pageCalc + 4 > index ){
                     return <BarLayout 
                                 setNoticeArray={setNoticeArray} 
+                                createdAt={item.createdAt}
                                 admin={admin} 
                                 key={index}
                                 id={item.id} 
