@@ -8,10 +8,12 @@ import NewAnnouncement from "./NewAnnouncement";
 
 function AnnouncementMain () {
     const [newToggle, setNewToggle] = useState(false);
+    const [reload, setReload] = useState(0);
+    const admin = 'admin';
     return (
         <MainLayout page={'공지'} content={
             <MainCon>
-                {newToggle ?<NewAnnouncement setNewToggle={setNewToggle} /> : <AnnouncementLayout setNewToggle={setNewToggle} newDisplay={'block'}/>}
+                {newToggle ?<NewAnnouncement reload={reload} setReload={setReload} setNewToggle={setNewToggle} /> : <AnnouncementLayout setReload={setReload} reload={reload} admin={admin} setNewToggle={setNewToggle} newDisplay={'block'}/>}
             </MainCon>
         } />
     )

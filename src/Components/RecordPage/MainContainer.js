@@ -101,10 +101,10 @@ function MainContainer ({ category, setRemove, remove }) {
             alert('성찰을 입력해 주세요.')
         } else if (week === ''){
             alert('주차를 입력해 주세요.')
-        } else if (dateStart === '') {
-            alert('시작일을 입력해 주세요.')
-        } else if (dateEnd === ''){
-            alert('마감일을 입력해 주세요.')
+        } else if (dateStart.split('').length < 6) {
+            alert('시작일 6자리를 입력해 주세요. (ex. 230725)')
+        } else if (dateEnd.split('').length < 6){
+            alert('마감일 6자리를 입력해 주세요. (ex. 230725)')
         } else {
             //추가 게시물 생성 Axios 요청 (추가하기)
             preAxios.put('/records/input', {

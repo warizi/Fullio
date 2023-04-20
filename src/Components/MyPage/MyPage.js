@@ -1287,7 +1287,7 @@ function MyPage() {
     }
     return (
         <>
-            { !loginBox ? <></> : <PwChange cancelChange={loginBoxToggle}/>}
+            { !loginBox ? <></> : <PwChange admin={'none'} cancelChange={loginBoxToggle}/>}
             <div className='start'></div>
             <div className='main-container'>
                 <div className='left-container'>

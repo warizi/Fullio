@@ -18,6 +18,7 @@ import PwChange from "../../MyPage/IdPwBox/PwChange";
 import logoimg from "../../../image/LogoImage.png";
 import { useEffect } from "react";
 import adminAxios from "../../adminAxios";
+import adminLoginAxios from "../../adminLoginAxios";
 
 function ManageMyPage () {
     const [loginToggle, setLoginToggel] = useState(true);
@@ -30,7 +31,7 @@ function ManageMyPage () {
     function clickLogout () {
         alert('로그아웃.');
         //url수정 필요
-        loginAxios.post("/logout")
+        adminLoginAxios.post("/logout")
         // .then((res) => res.json())
         .then((res) => {
             movePage('/');
@@ -112,7 +113,7 @@ function ManageMyPage () {
             <SubNavBox title={'마이 페이지'} btnArray={navBtn}/>
             <RightContainer>
                 <Title>기본 정보</Title>
-                {loginToggle ? <></> : <PwChange cancelChange={cancelChange}/>}
+                {loginToggle ? <></> : <PwChange admin={'admin'} cancelChange={cancelChange}/>}
                 {/* 프로필 */}
                 <FloatBox>
                 <ProfileContainer>

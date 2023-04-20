@@ -38,8 +38,16 @@ function RecordMainBox ({ memberNumber, item, id, category, setRecordArray, admi
         setCapability(item.capabilities);
         setActivity(item.activity);
         setReflection(item.reflection);
-        setDateStart(item.dateStart);
-        setDateEnd(item.dateEnd);
+        const dsArray = item.dateStart.split('');
+        const deArray = item.dateEnd.split('');
+        dsArray.splice(2, 0, '.');
+        dsArray.splice(5, 0, '.');
+        deArray.splice(2, 0, '.');
+        deArray.splice(5, 0, '.');
+        console.log(dsArray);
+
+        setDateStart(dsArray.join(''));
+        setDateEnd(deArray.join(''));
         setWeek(item.week);
         setChecked(item.checkBox);
         console.log(item.checkBox);
@@ -465,6 +473,7 @@ const CommentBody = styled.div`
     border-bottom: 1px solid ${COLOR.GSD9};
 `;
 const CommentBtn = styled.img`
+    border-radius: 999rem;
     width: 2.4rem;
     height: 2.4rem;
     cursor: pointer;

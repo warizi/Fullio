@@ -16,6 +16,8 @@ import PrimaryBasicButton from "../Layout/PrimaryBasicButton";
 import CheckLog from "./recordManage/CheckLog";
 import logoImg from "../../image/LogoImage.png";
 import adminLoginAxios from "../adminLoginAxios";
+import { useEffect, useState } from "react";
+import adminAxios from "../adminAxios";
 
 const noticeDB = [
     {
@@ -79,51 +81,13 @@ const checkDB = [
     ['진승현', null, true, false, true, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null, null, false, true, false, null, false, true, false, null],
 ];
 
-const checkAxiosDB = [
-    [
-        {
-            profilPath: null,
-            name: "MERGE",
-            nickName: null,
-            position: '보스',
-        }
-    ],
-    [
-        {
-            member: '강지용',
-            week1: false,
-            week2: false,
-            week3: true,
-        },
-        {
-            member: '고기훈',
-            week1: false,
-            week2: false,
-            week3: true,
-        },
-        {
-            member: '고재영',
-            week1: false,
-            week2: false,
-            week3: true,
-        },
-        {
-            member: '오주연',
-            week1: false,
-            week2: false,
-            week3: true,
-        },
-        {
-            member: '진승현',
-            week1: false,
-            week2: false,
-            week3: true,
-        }
-    ]
-]
 
 function ManagementMain () {
-
+    const [recordArray, setRecordArray] = useState([]);
+    const [userName, setUserName] = useState('사용자 이름');
+    const [position, setPosition] = useState('직책');
+    const [nickName, setNickName] = useState('닉네임');
+    const [imgFile, setImgFile] = useState(logoImg);
     const movePage = useNavigate();
     function clickLogout () {
         alert('로그아웃.');
@@ -137,6 +101,18 @@ function ManagementMain () {
             console.error(new Error("로그아웃 중 에러 발생"));
         });
     };
+    useEffect(() => {
+        adminAxios.post('url',{title: '몰루'})
+        .then((res) => {
+            //대충 감으로 넣었음. 수정 필요
+            setImgFile(res.data[0].profil_path);
+            setUserName(res.data[0].userName);
+            setNickName(res.data[0].nickName);
+            setPosition(res.data[0].position);
+        
+            setRecordArray(res.data[1]);
+        })
+    }, [])
     function movePageClick(e) {
         const title = e.target.innerHTML;
         if (title === '성찰일지 관리') {
@@ -155,19 +131,23 @@ function ManagementMain () {
     };
 
     const renderArray = [];
-    for (let i = 1; checkDB[0].length > i ; i++) {
-        renderArray.push(<TitleItem key={i}>{i}주차</TitleItem>)
+    if (recordArray[0]) {
+        for (let i = 1; recordArray[0].length > i ; i++) {
+            renderArray.push(<TitleItem key={i}>{i}주차</TitleItem>)
+        }
     }
+    
     
     return (
         <div className="main_container">
             <div className="left_container">
-                <Logimg  src={logoImg} alt="로고 이미지" />
-                <NavLayout content={<>
-                    <ButtonLayout title={'인재관리'} onClick={(e) => movePageClick(e)}/>
-                    <ButtonLayout title={'성찰일지 관리'} onClick={(e) => movePageClick(e)}/>
-                    <ButtonLayout title={'공지 관리'} onClick={(e) => movePageClick(e)}/>
-                    <ButtonLayout title={'챌린지'} onClick={(e) => movePageClick(e)}/>
+                <Logimg  src={imgFile} alt="로고 이미지" />
+                <NavLayout content={
+                    <>
+                        <ButtonLayout title={'인재관리'} onClick={(e) => movePageClick(e)}/>
+                        <ButtonLayout title={'성찰일지 관리'} onClick={(e) => movePageClick(e)}/>
+                        <ButtonLayout title={'공지 관리'} onClick={(e) => movePageClick(e)}/>
+                        <ButtonLayout title={'챌린지'} onClick={(e) => movePageClick(e)}/>
                     </>
                 } />
                 <PrimaryButton onClick={moveSetting}>설정</PrimaryButton>
@@ -181,8 +161,8 @@ function ManagementMain () {
                 </section>
                 <section className="manager_info">
                     <img src={profileImg} alt="프로필 사진" />
-                    <span>{`김윤석 / 교육훈련팀`}</span> 
-                    <span>{`@dnstjr619`}</span>
+                    <span>{`${userName} / ${position}`}</span> 
+                    <span>{nickName}</span>
                     <PrimaryBasicButton 
                         width={"100%"} 
                         height={'5.2rem'} 
@@ -198,7 +178,7 @@ function ManagementMain () {
                             <div className="week_title">
                                 {renderArray}
                             </div>
-                            {checkDB.map((item, index) => {
+                            {recordArray.map((item, index) => {
                                 return(
                                     <CheckLog index={index} key={index} item={item} />
                                 )

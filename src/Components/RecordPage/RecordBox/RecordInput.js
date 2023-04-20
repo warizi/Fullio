@@ -26,6 +26,7 @@ function RecordInput ({week, setWeek, dateStart, setDateStart, dateEnd, setDateE
     function reflectionOnChange (e) {
         const text = e.target.value;
         setReflection(text);
+        console.log(text);
     }
     function weekChange (e) {
         if(e.target.value >= 0){
@@ -114,7 +115,7 @@ function RecordInput ({week, setWeek, dateStart, setDateStart, dateEnd, setDateE
                     </InfoItem>
                 </InfoContainer>
                 <RecordContent>
-                    <InputT 
+                    <InputPre 
                     value={activity}
                     onChange={activityOnChange}
                     marginB={0.8} 
@@ -148,6 +149,25 @@ const InputT = styled.textarea`
     width: ${props => props.width};
     resize: none;
     margin-bottom: ${props => props.marginB}rem;
+    &:focus {
+        outline: none;
+        border: 1px solid ${COLOR.Primary};
+    }
+    &::placeholder {
+        font-size: 1.2rem;
+    }
+    
+`;
+const InputPre = styled.textarea`
+    font-size: 1.2rem;
+    border: 1px solid ${COLOR.GSD9};
+    border-radius: 0.8rem;
+    padding: 0.9rem 1.2rem;
+    height: ${props => props.height};
+    width: ${props => props.width};
+    resize: none;
+    margin-bottom: ${props => props.marginB}rem;
+    white-space: pre-line;
     &:focus {
         outline: none;
         border: 1px solid ${COLOR.Primary};

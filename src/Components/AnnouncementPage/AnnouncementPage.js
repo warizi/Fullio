@@ -10,6 +10,7 @@ import BoxShadow from "../MainPage/StyleComponents";
 import AnnouncementLayout from "../Layout/announcement/AnnouncementLayout";
 function AnnouncementPage () {
     const [removeAlet, setRemoveAlet] = useState(0);
+    const admin = 'none';
     const logo = logoImg;
     const movePage = useNavigate();
     function moveMain () {
@@ -36,7 +37,7 @@ function AnnouncementPage () {
             </div>
             <div className="center_container">
                 <ContentLayout>
-                    <AnnouncementLayout newDisplay={'none'} />
+                    <AnnouncementLayout admin={admin} newDisplay={'none'} />
                 </ContentLayout>
             </div>
         </div>

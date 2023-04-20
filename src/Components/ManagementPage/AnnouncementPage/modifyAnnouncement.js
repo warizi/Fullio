@@ -1,11 +1,17 @@
 import { useState } from "react";
 import styled from "styled-components";
 import adminAxios from "../../adminAxios";
+import { useEffect } from "react";
+import COLOR from "../../MainPage/COLOR";
 
-function NewAnnouncement ({ reload, setReload, setNewToggle}) {
+function ModifyAnnouncement ({ setNoticeArray, id, setModiToggle, content, title, name}) {
     const [titleValue, setTitleValue] = useState(``);
     const [contentValue, setContentValue] = useState(``);
     
+    useEffect(() => {
+        setTitleValue(title);
+        setContentValue(content);
+    }, [])
 
     function titleChange (e) {
         const text = e.target.value;
@@ -17,7 +23,7 @@ function NewAnnouncement ({ reload, setReload, setNewToggle}) {
     }
     function cancelNew () {
         if(window.confirm('작성을 취소하시겠습니까?')){
-            setNewToggle(false);
+            setModiToggle(false);
             setTitleValue('');
             setContentValue('');
         }
@@ -35,24 +41,33 @@ function NewAnnouncement ({ reload, setReload, setNewToggle}) {
         // let day = today.getDay();  // 요일
         // console.log(`${year}년 ${month}월 ${date}일 ${hours}시 ${minutes}분 ${seconds}초`);
         
-        if(window.confirm('글을 게시하겠습니까?')){
+        if(window.confirm('글을 수정하겠습니까?')){
             adminAxios.put('notice/detail/input', {
                 title: titleValue,
                 detail: contentValue,
+                id: id,
             })
             .then((res) => {
-                setReload(reload + 1);
-                alert('성공');
+                adminAxios.get('notice/output')
+                .then((res) => {
+                    setNoticeArray([...res.data]);
+                    alert('성공');
+                    setModiToggle(false);
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
             })
             .catch((err) => {
                 console.error(err);
             });
+            setModiToggle(false);
         }
     }
     return (
         <NewCon>
             <TitleInput type="text" placeholder="제목" value={titleValue} onChange={titleChange}/>
-            <NameCon>MERGE</NameCon>
+            <NameCon>{name}</NameCon>
             <ContentTextArea placeholder="공지 내용" value={contentValue} onChange={contentChange}/>
             <SubmitBtn onClick={cancelNew}>작성취소</SubmitBtn>
             <SubmitBtn onClick={submitNew}>작성</SubmitBtn>
@@ -71,6 +86,11 @@ const ContentTextArea = styled.textarea`
 `;
 const NewCon = styled.div`
     width: 111rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3000;
+    background-color: ${COLOR.Primary};
 `;
 const NameCon = styled.div`
     display: inline-block;
@@ -88,4 +108,4 @@ const TitleInput = styled.input`
     font-size: 1.6rem;
     line-height: 5rem;
 `;
-export default NewAnnouncement;
+export default ModifyAnnouncement;

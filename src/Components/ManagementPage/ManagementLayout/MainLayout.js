@@ -9,6 +9,7 @@ import profileImg from "../../../image/Profile.png";
 import styled from "styled-components";
 import { useState } from "react";
 import { useEffect } from "react";
+import adminLoginAxios from "../../adminLoginAxios";
 function MainLayout ({content, page}) {
     const [miniHeight, setMiniHeight] = useState('0rem');
     const [miniWidth, setMiniWidth] = useState('0rem');
@@ -35,7 +36,7 @@ function MainLayout ({content, page}) {
     function clickLogout () {
         alert('로그아웃.');
         //url수정 필요
-        loginAxios.post("/logout")
+        adminLoginAxios.post("/logout")
         // .then((res) => res.json())
         .then((res) => {
             movePage('/');

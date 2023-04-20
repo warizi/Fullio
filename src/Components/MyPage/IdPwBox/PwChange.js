@@ -1,26 +1,99 @@
 import styled from "styled-components";
 import COLOR from "../../MainPage/COLOR";
 import { useState } from "react";
+import adminAxios from "../../adminAxios";
+import preAxios from "../../axios";
 
 
-function PwChange ({ cancelChange }) {
-    const [pwText, setPwText] = useState();
+function PwChange ({admin, cancelChange }) {
+    const [pwText, setPwText] = useState('');
+    const [newPwText, setNewPwText] = useState('');
+    const [checkPwText, setCheckPwText] = useState('');
+    const [pwError, setPwError] = useState('');
+    const [newPwError, setNewPwError] = useState('');
+    const [checkPwError, setCheckPwError] = useState('');
+    const [pwBorder, setPwBorder] = useState('none');
+    const [newPwBorder, setNewPwBorder] = useState('none');
+    
+    function pwChange (e) {
+        const text = e.target.value;
+        setPwText(text);
+    };
+    function newPwChange (e) {
+        const text = e.target.value;
+        setNewPwText(text);
+    };
+    function checkPwChange (e) {
+        const text = e.target.value;
+        setCheckPwText(text);
+    };
+    function clearAlert () {
+        setPwBorder('none');
+        setNewPwBorder('none');
+        setPwError('');
+        setNewPwError('');
+        setCheckPwError('');
+    };
     function submitChange () {
-        alert('비밀번호 변경');
-        cancelChange();
-    }
+        if (pwText.length < 4) {
+            setPwError('비밀번호를 확인해 주세요.');
+            setPwBorder('1px solid red');
+        } else if(pwText === newPwText) {
+            //기존 패스워드와 새 패스워드가 같은 경우
+            setNewPwError('기존 비밀번호와 다른 비밀번호를 입력해주세요.');
+            setNewPwBorder('1px solid red');
+        } else if (newPwText !== checkPwText) {
+            //새 패스워드와 확인 패스워드가 일치하지 않은 경우
+            setCheckPwError('새 비밀번호가 일치하지 않습니다.');
+            setNewPwBorder('1px solid red');
+        } else if (newPwText.length < 4) {
+            //기존 패스워드와 새 패스워드가 같은 경우
+            setNewPwError('비밀번호를 4자리 이상 입력해주세요.');
+            setNewPwBorder('1px solid red');
+        } else {
+            if(window.confirm('비밀번호를 변경하시겠습니까?')) {
+            // 비밀번호 변경 Axios 전송
+            if (admin === 'admin') {
+                adminAxios.post('change', {
+                    pw1: pwText,
+                    pw2: newPwText,
+                })
+                .then((res) => {
+                    alert('변경완료!');
+                    cancelChange();
+                })
+                .catch((err) => {
+                    setPwError('비밀번호를 확인해 주세요.');
+                    console.error(err);
+                })
+            } else if (admin === 'none') {
+                preAxios.post('mypage/change', {
+                    pw1: pwText,
+                    pw2: newPwText,
+                })
+                .then((res) => {
+                    alert('변경완료!');
+                    cancelChange();
+                })
+                .catch((err) => {
+                    setPwError('비밀번호를 확인해 주세요.');
+                    console.error(err);
+                })
+            }
+        }
+        }};
     return (
         <ViewBack>
             <PwContainer>
                 <PwTitle>비밀번호 변경</PwTitle>
-                <PwInput type="password" placeholder="현재 비밀번호"/>
-                <AlertText></AlertText>
-                <PwInput type="password" placeholder="새 비밀번호 (숫자 포함 4자 이상)"/>
-                <AlertText></AlertText>
-                <PwInput type="password" placeholder="새 비밀번호 확인"/>
-                <AlertText></AlertText>
+                <PwInput border={pwBorder} onFocus={clearAlert} type="password" placeholder="현재 비밀번호" value={pwText} onChange={(e) => pwChange(e)}/>
+                <AlertText>{pwError}</AlertText>
+                <PwInput border={newPwBorder} onFocus={clearAlert} type="password" placeholder="새 비밀번호 (숫자 포함 4자 이상)" value={newPwText} onChange={(e) => newPwChange(e)} />
+                <AlertText>{newPwError}</AlertText>
+                <PwInput border={newPwBorder} onFocus={clearAlert} type="password" placeholder="새 비밀번호 확인" value={checkPwText} onChange={(e) => checkPwChange(e)} />
+                <AlertText>{checkPwError}</AlertText>
                 <PwBtn color={true} onClick={cancelChange}>변경 취소</PwBtn>
-                <PwBtn color={false} >확인</PwBtn>
+                <PwBtn onClick={submitChange} color={false} >확인</PwBtn>
             </PwContainer>
         </ViewBack>
     )
@@ -59,9 +132,9 @@ const PwInput = styled.input`
     height: 4.2rem;
     border-radius: 0.8rem;
     background-color: ${COLOR.GSF0};
-    border: none;
+    border: ${props => props.border};
     padding: 0.9rem 1.2rem;
-    font-size: 1.2rem
+    font-size: 1.2rem;
 `;
 const ViewBack = styled.div`
     position: absolute;
@@ -85,5 +158,3 @@ const PwContainer = styled.div`
 `;
 
 export default PwChange;
-
-

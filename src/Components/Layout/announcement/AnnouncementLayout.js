@@ -4,235 +4,234 @@ import COLOR from "../../MainPage/COLOR";
 import './main.css';
 import PaginationBtn from "./PaginationBtn";
 import { useEffect, useState } from "react";
+import adminAxios from "../../adminAxios";
+import preAxios from "../../axios";
 
-const announcementDB = [
+const announceArray = [
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
+        content: '내 모든 action 어린 너의 힘을 키워',
+        id: '1',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '2',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '난 세상 중심의 Yout'
+        content: '난 세상 중심의 Yout',
+        id: '3',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '4',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '5',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
+        content: '내 모든 action 어린 너의 힘을 키워',
+        id: '6',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '난 세상 중심의 Yout'
+        content: '난 세상 중심의 Yout',
+        id: '7',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '8',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '9',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
+        content: '내 모든 action 어린 너의 힘을 키워',
+        id: '10',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '난 세상 중심의 Yout'
+        content: '난 세상 중심의 Yout',
+        id: '11',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '12',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '13',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
+        content: '내 모든 action 어린 너의 힘을 키워',
+        id: '14',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '난 세상 중심의 Yout'
+        content: '난 세상 중심의 Yout',
+        id: '15',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '16',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '17',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
+        content: '내 모든 action 어린 너의 힘을 키워',
+        id: '18',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '난 세상 중심의 Yout'
+        content: '난 세상 중심의 Yout',
+        id: '19',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '20',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '21',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
+        content: '내 모든 action 어린 너의 힘을 키워',
+        id: '22',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '난 세상 중심의 Yout'
+        content: '난 세상 중심의 Yout',
+        id: '23',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '24',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '25',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
+        content: '내 모든 action 어린 너의 힘을 키워',
+        id: '26',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '난 세상 중심의 Yout'
+        content: '난 세상 중심의 Yout',
+        id: '27',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '28',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
+        content: '',
+        id: '29',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
+        content: '내 모든 action 어린 너의 힘을 키워',
+        id: '30',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: '난 세상 중심의 Yout'
+        content: '난 세상 중심의 Yout',
+        id: '31',
     },
     {   
         date: '2023.01.04',
         name: 'MERGE',
-        content: ''
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: ''
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: ''
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: ''
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: '난 세상 중심의 Yout'
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: ''
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: ''
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: '내 모든 action 어린 너의 힘을 키워'
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: '난 세상 중심의 Yout'
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: ''
-    },
-    {   
-        date: '2023.01.04',
-        name: 'MERGE',
-        content: ''
+        content: '',
+        id: '32',
     },
 ];
-function AnnouncementLayout ({ setNewToggle, newDisplay}) {
+function AnnouncementLayout ({reload, admin, setNewToggle, newDisplay}) {
+    const [noticeArray, setNoticeArray] = useState(announceArray);
     const [page, setPage] = useState([]);
     const [pageNum, setPageNum] = useState(1);
     useEffect(() => {
-        const count = announcementDB.length / 4 + 1;
+        if(admin === 'admin') {
+            adminAxios.get('notice/ouput')
+            .then((res) => {
+                setNoticeArray([...res.data]);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+        } else if (admin === 'none') {
+            preAxios.get('notice/output')
+            .then((res) => {
+                setNoticeArray([...res.data]);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+        };
+    }, [reload])
+    useEffect(() => {
+        const count = noticeArray.length / 4 + 1;
         const pageArray = [];
         for (let i = 1; i < count ; i++) {
             pageArray.push(i);
         }
         setPage([...pageArray]);
-    }, [announcementDB])
+    }, [noticeArray])
     function newContent () {
         setNewToggle(true);
     }
@@ -246,10 +245,19 @@ function AnnouncementLayout ({ setNewToggle, newDisplay}) {
                 <ItemCon width={'21rem'}>작성자</ItemCon>
             </BarCon>
             <NoticeCon>강조되는 공지입니다.</NoticeCon>
-            {announcementDB.map( (item, index) => {
+            {noticeArray.map( (item, index) => {
                 const pageCalc = ((pageNum - 1) * 4);
                 if(pageCalc <= index && pageCalc + 4 > index ){
-                    return <BarLayout key={index} date={item.date} title={item.content} number={index + 1} name={item.name}></BarLayout>
+                    return <BarLayout 
+                                setNoticeArray={setNoticeArray} 
+                                admin={admin} 
+                                key={index}
+                                id={item.id} 
+                                date={item.time} 
+                                title={item.title} 
+                                number={item.id} 
+                                name={item.name}>
+                            </BarLayout>
                 }
             } )}
             <NewNotice onClick={newContent} display={newDisplay}>글쓰기</NewNotice>
