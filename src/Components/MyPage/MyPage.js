@@ -334,34 +334,27 @@ function BasicInfo ({ changeLogin }) {
         const reG = /^\d{3}[-]{1}\d{4}[-]{1}\d{1,4}/;
         const phoneText = e.target.value;
         if(phoneText.length <= 3) {//숫자 3개일 때 그대로 적용
-            console.log('숫자 3개만 있음');
             const reA = /^\d{0,3}/;
             if(reA.test(phoneText)){
                 setPhone(phoneText);
             }
         } else if (phoneText.length === 4 && reB.test(phoneText)) {//숫자 4개에 하이픈 없을 때 하이픈 추가
-            console.log('숫자 4개 입력');
             const phoneSplit = phoneText.split('');
             phoneSplit.splice(3, 0, '-');
             const phoneJoin = phoneSplit.join('');
             setPhone(phoneJoin);
         } else if (phoneText.length === 4 && reC.test(phoneText)) {//숫자 3개에 하이픈 있을 때 그대로 적용
-            console.log('숫자 3개 하이픈 1개');
             setPhone(phoneText);
         } else if (phoneText.length >= 5 && phoneText.length <= 8 && reD.test(phoneText)){// 숫자 3개 + 하이픈 1개 + 숫자 1~4개일 때 그대로 적용
-            console.log('숫자 3개 하이픈 1개 숫자 1~4개');
             setPhone(phoneText);
         } else if (phoneText.length === 9 && reE.test(phoneText)) {//숫자 3개 + 하이픈1개 + 숫자 5개 일 때 하이픈 추가
-            console.log('숫자 3개 하이픈 1개 숫자 5개');
             const phoneSplit = phoneText.split('');
             phoneSplit.splice(8, 0, '-');
             const phoneJoin = phoneSplit.join('');
             setPhone(phoneJoin);
         } else if (phoneText.length === 9 && reF.test(phoneText)) {//숫자 3개 + 하이픈1개 + 숫자 4개 + 하이픈 1개 일 때 그대로 적용
-            console.log('숫자 3개 하이픈 1개 숫자 4개 하이픈 1개');
             setPhone(phoneText);
         } else if (phoneText.length >= 9 && phoneText.length <= 13 && reG.test(phoneText)){//마지막 완성
-            console.log('마지막 단계');
             setPhone(phoneText);
         }
     }
@@ -392,7 +385,6 @@ function BasicInfo ({ changeLogin }) {
     function putPhone (e) {
         if (e.key === "Enter") {
             alert('연락처 적용 완료!')
-            console.log(phone);
             preAxios.put('/mypage/userupdate', {
                 phoneNumber: phone,
             })
@@ -406,6 +398,7 @@ function BasicInfo ({ changeLogin }) {
     function fileAxios (e) {
         const formData = new FormData();
         formData.append("file", e.target.files[0]);
+        //axios.put('http://www.fullio.kr:8000/api/files/image', formData ,{ 
         axios.put('http://localhost:8000/api/files/image', formData ,{ 
             headers: {
                 "content-Type": 'multipart/form-data',

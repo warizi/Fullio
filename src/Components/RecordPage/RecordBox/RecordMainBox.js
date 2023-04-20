@@ -49,7 +49,6 @@ function RecordMainBox ({ memberNumber, item, id, category, setRecordArray, admi
         setDateEnd(deArray.join(''));
         setWeek(item.week);
         setChecked(item.checkBox);
-        console.log(item.checkBox);
     },[item])
 
     //숫자 적용시 2개 단위로 나눠 .을 넣습니다.

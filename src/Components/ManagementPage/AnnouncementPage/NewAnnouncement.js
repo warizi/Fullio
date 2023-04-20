@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import adminAxios from "../../adminAxios";
+import BoxShadow from "../../MainPage/StyleComponents";
+import COLOR from "../../MainPage/COLOR";
 
 function NewAnnouncement ({ reload, setReload, setNewToggle}) {
     const [titleValue, setTitleValue] = useState(``);
@@ -50,7 +52,14 @@ function NewAnnouncement ({ reload, setReload, setNewToggle}) {
         </NewCon>
     )
 }
-const SubmitBtn = styled.button`
+const SubmitBtn = styled.div`
+    cursor: pointer;
+    background-color: ${COLOR.White};
+    ${BoxShadow};
+    line-height: 3rem;
+    text-align: center;
+    overflow: hidden;
+    color: black;
     display: inline-block;
     width: 10rem;
     height: 3rem;

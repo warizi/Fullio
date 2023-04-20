@@ -42,13 +42,11 @@ function MainContainer ({ category, setRemove, remove }) {
 
     //불러오기
     useEffect(() => {
-        console.log(category);
         if (category === '심화교육' || category === '공통교육') {
             preAxios.post('/records/output', {
                 category: category,
             })
             .then((res) => {
-                console.log(res.data);
               const array = res.data;
               const reverse = array.reverse();
                 setRecordArray(reverse);

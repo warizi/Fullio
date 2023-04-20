@@ -26,7 +26,6 @@ function RecordInput ({week, setWeek, dateStart, setDateStart, dateEnd, setDateE
     function reflectionOnChange (e) {
         const text = e.target.value;
         setReflection(text);
-        console.log(text);
     }
     function weekChange (e) {
         if(e.target.value >= 0){

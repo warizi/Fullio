@@ -163,7 +163,7 @@ function ManagementMain () {
     return (
         <div className="main_container">
             <div className="left_container">
-                <Logimg  src={imgFile} alt="로고 이미지" />
+                <Logimg  src={logoImg} alt="로고 이미지" />
                 <NavLayout content={
                     <>
                         <ButtonLayout title={'인재관리'} onClick={(e) => movePageClick(e)}/>
@@ -214,13 +214,22 @@ function ManagementMain () {
         </div>
     )
 };
-const CategoryBtn = styled.button`
+const CategoryBtn = styled.div`
+    background-color: ${COLOR.White};
+    cursor: pointer;
+    color: black;
+    border-radius: 0.8rem;
+    overflow: hidden;
     padding: 0;
     z-index: 5000;
-    font-size: 1.2rem;
+    font-size: 1rem;
     width: 6rem;
     height: 4rem;
+    line-height: 4rem;
+    text-align: center;
     position: absolute;
+    ${BoxShadow};
+
 `;
 const Logimg = styled.img`
     position: absolute;

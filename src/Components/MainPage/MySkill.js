@@ -209,14 +209,12 @@ function SkillGraph ({ id,value, title, onClick }) {
             if (getTitle.length > 6) {
                 const sliceTitle = titleText.slice(0, 5) + '..';
                 const keyV = onClick();
-                console.log(keyV);
                 if (keyV === 1) {
                     titleA = titleText;
                 } else if (keyV === 2) {
                     titleB = titleText;
                 } else if (keyV === 3) {
                     titleC = titleText;
-                    console.log(titleC)
                 } else if (keyV === 4) {
                     titleD = titleText;
                 }

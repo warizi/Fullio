@@ -63,7 +63,6 @@ function MainLayout ({content, page}) {
         } else {
             setNoticeHeight(0);
         }
-        console.log(noticeHeight);
     };
     function movePageClick (e) {
         const title = e.target.innerHTML;

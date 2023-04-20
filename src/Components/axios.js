@@ -70,7 +70,6 @@ preAxiosA.interceptors.response.use(
         .then((res) => {
           if (res.status === 200) {
             // 새로운 AccessToken이 발급된 경우, 원래 요청을 재시도합니다.
-            console.log('토큰재발급됨')
             const config = error.config;
             return preAxiosA.request(config);
           } else {
@@ -78,7 +77,7 @@ preAxiosA.interceptors.response.use(
           }
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           return Promise.reject(error);
         });
     }

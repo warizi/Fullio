@@ -3,6 +3,7 @@ import styled from "styled-components";
 import adminAxios from "../../adminAxios";
 import { useEffect } from "react";
 import COLOR from "../../MainPage/COLOR";
+import BoxShadow from "../../MainPage/StyleComponents";
 
 function ModifyAnnouncement ({ setNoticeArray, id, setModiToggle, content, title, name}) {
     const [titleValue, setTitleValue] = useState(``);
@@ -65,7 +66,16 @@ function ModifyAnnouncement ({ setNoticeArray, id, setModiToggle, content, title
         </NewCon>
     )
 }
-const SubmitBtn = styled.button`
+const SubmitBtn = styled.div`
+    cursor: pointer;
+    background-color: ${COLOR.White};
+    ${BoxShadow};
+    line-height: 3rem;
+    text-align: center;
+    overflow: hidden;
+    color: black;
+    font-size: 1.2rem;
+    border-radius: 0.8rem;
     display: inline-block;
     width: 10rem;
     height: 3rem;

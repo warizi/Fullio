@@ -11,7 +11,9 @@ function BarLayout ({createdAt, id, admin, date, number, title, name, setNoticeA
     const [writerCheck, setWriterCheck] = useState(false);
     const [modiToggle, setModiToggle] = useState(false);
     function contentClick () {
-        console.log(createdAt);
+        if(admin === 'admin'){
+          console.log(createdAt);
+        }
         if (contentToggle === '0') {
             setContentToggle('15rem');
         } else {

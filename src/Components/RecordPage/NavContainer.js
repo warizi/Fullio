@@ -104,8 +104,7 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
         dragStartIndex = null;
         dragEnterIndex = null;
         //드래그 앤 드랍을 마치면 변경 사항을 서버에 적용 Axios를 보냅니다.
-        console.log(dbNew);
-
+        
         preAxios.put('/logs/input', dbNew)
         .then((res) => {
             if(res.data.success) {
@@ -131,7 +130,6 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
             setDeleteCatgoryY(y);
             setModalDisplay('block');
             setCategoryIndex(index);
-            console.log(categoryIndex);
         }
     }
     window.addEventListener('click', () => {
@@ -165,13 +163,11 @@ function NavContainer ({ title, category, onChange, remove, setRemove }) {
             setNewCategoryText('');
             setDragDB([...newDB]);
 
-            console.log('enter');
             preAxios.put('logs/input', [{
                 rank: length,
                 title: newCategoryText,
             }])
             .then((res) => {
-                console.log(res.data);
                 preAxios.post('/logs/output', {
                     category: 'title',
                 })

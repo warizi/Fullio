@@ -25,7 +25,7 @@ function ManageMyPage () {
     const [profileImgURL, setProfileImgURL] = useState(ProfileImage);//프로필 사진 
     const [idInput, setIdInput] = useState('아이디');
     const [userName, setUserName] = useState('이름');
-    const [part, setPart] = useState('소속부서');
+    const [part, setPart] = useState('직책');
     const navBtn = [{title: '계정관리', id: 'mmp1',}]
     const movePage = useNavigate();
     function clickLogout () {
@@ -61,7 +61,7 @@ function ManageMyPage () {
                 "content-Type": 'multipart/form-data',
             }})
             .then((res) => {
-                    preAxios.get('/main/userinfo')
+                    preAxios.get('main/userinfo')
                     .then((res) => {
                         setProfileImgURL(res.data.profil_path);
                     })
@@ -84,14 +84,14 @@ function ManageMyPage () {
     }
 
     useEffect(() => {
-        adminAxios.get('최초로딩 url')
+        adminAxios.get('main/userinfo')
         .then((res) => {
-            setIdInput(res.id);
-            setUserName(res.name);
-            setPart(res.part);
+            setIdInput(res.data.adminNumber);
+            setUserName(res.data.name);
+            setPart(res.data.position);
         })
         .catch((err) => {
-            console.log(err);
+            console.error(err);
         })
     }, [])
     return (
@@ -157,7 +157,7 @@ function ManageMyPage () {
                     </InputBoxCon>
                     <InputBoxCon>
                         <InputCon>
-                        <InfoTitle>소속부서</InfoTitle>
+                        <InfoTitle>직책</InfoTitle>
                             <InputConBox>
                                 <InInput name="input-text" readOnly type="text" value={part}/>
                             </InputConBox>
